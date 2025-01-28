@@ -34,6 +34,16 @@ namespace AnomalyDetectionTeamSynergy
                     var predictor = learning.Run(htm_training_sequence);
 
                 }
+
+                foreach (var filePath in fileHandler.InferringDataFiles)
+                {
+                    Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
+
+                    var inferring_sequences = csv_reader.ParseSequencesFromCSV(filePath);
+                    csv_reader.DisplaySequenceData(inferring_sequences);
+
+                }
+
             }
             catch (Exception ex)
             {
