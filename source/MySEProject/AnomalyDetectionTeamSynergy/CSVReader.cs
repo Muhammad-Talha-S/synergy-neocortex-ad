@@ -6,9 +6,16 @@ using System.Linq;
 
 namespace AnomalyDetectionTeamSynergy
 {
+    /// <summary>
+    /// Provides functionality to read and parse sequences from a CSV file.
+    /// </summary>
     public class CSVReader
     {
-        // Method to parse sequences from a CSV file
+        /// <summary>
+        /// Parses numerical sequences from a CSV file.
+        /// </summary>
+        /// <param name="filePath">The path to the CSV file.</param>
+        /// <returns>A list of sequences, where each sequence is a list of double values.</returns>
         public List<List<double>> ParseSequencesFromCSV(string filePath)
         {
             // Initialize a list to store sequences
@@ -56,7 +63,10 @@ namespace AnomalyDetectionTeamSynergy
             return sequences;
         }
 
-        // Method to display sequence data
+        /// <summary>
+        /// Displays the parsed sequence data in the console.
+        /// </summary>
+        /// <param name="sequences">A list of numerical sequences to display.</param>
         public void DisplaySequenceData(List<List<double>> sequences)
         {
             Console.WriteLine("Displaying sequence data:");
