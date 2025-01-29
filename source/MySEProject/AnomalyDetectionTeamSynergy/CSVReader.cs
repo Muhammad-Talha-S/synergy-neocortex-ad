@@ -63,6 +63,19 @@ namespace AnomalyDetectionTeamSynergy
             return sequences;
         }
 
+        public List<List<double>> TrimSequences(List<List<double>> sequences, int N)
+        {
+            List<List<double>> trimmedSequences = new List<List<double>>();
+
+            foreach (var sequence in sequences)
+            {
+                List<double> trimmedSequence = sequence.Skip(N).ToList();
+                trimmedSequences.Add(trimmedSequence);
+            }
+
+            return trimmedSequences;
+        }
+
         /// <summary>
         /// Displays the parsed sequence data in the console.
         /// </summary>
