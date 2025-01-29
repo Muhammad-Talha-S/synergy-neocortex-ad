@@ -41,9 +41,10 @@ namespace AnomalyDetectionTeamSynergy
 
                     var inferring_sequences = csv_reader.ParseSequencesFromCSV(filePath);
                     csv_reader.DisplaySequenceData(inferring_sequences);
+
+                    Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
                     var trimed_inferring_sequences = csv_reader.TrimSequences(inferring_sequences, 2);
                     csv_reader.DisplaySequenceData(trimed_inferring_sequences);
-
                 }
 
             }

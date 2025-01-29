@@ -63,6 +63,12 @@ namespace AnomalyDetectionTeamSynergy
             return sequences;
         }
 
+        /// <summary>
+        /// Trims the first N elements from each sequence in a list of sequences.
+        /// </summary>
+        /// <param name="sequences">A list of lists, where each inner list represents a sequence of double values.</param>
+        /// <param name="N">The number of elements to remove from the beginning of each sequence.</param>
+        /// <returns>A new list of lists where each inner list has its first N elements removed.</returns>
         public List<List<double>> TrimSequences(List<List<double>> sequences, int N)
         {
             List<List<double>> trimmedSequences = new List<List<double>>();
