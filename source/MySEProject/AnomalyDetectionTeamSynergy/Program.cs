@@ -13,6 +13,9 @@ namespace AnomalyDetectionTeamSynergy
 
             var fileHandler = new FileHandler(defaultTrainingFolder, defaultInferringFolder);
 
+            List<List<double>> all_training_sequences = new List<List<double>>();
+            List<List<double>> all_inferring_sequences = new List<List<double>>();
+
             try
             {
                 fileHandler.ProcessArguments(args);
@@ -25,15 +28,14 @@ namespace AnomalyDetectionTeamSynergy
                 foreach (var filePath in fileHandler.TrainingDataFiles)
                 {
                     Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
-
                     var training_sequences = csv_reader.ParseSequencesFromCSV(filePath);
                     csv_reader.DisplaySequenceData(training_sequences);
-                    var htm_training_sequence = csv_htm_input.BuildHTMInput(training_sequences);
-
-                    MultiSequenceLearning learning = new MultiSequenceLearning();
-                    var predictor = learning.Run(htm_training_sequence);
-
+                    all_training_sequences.AddRange(training_sequences);
                 }
+
+                var htm_training_sequence = csv_htm_input.BuildHTMInput(all_training_sequences);
+                MultiSequenceLearning learning = new MultiSequenceLearning();
+                var predictor = learning.Run(htm_training_sequence);
 
                 foreach (var filePath in fileHandler.InferringDataFiles)
                 {
@@ -41,12 +43,12 @@ namespace AnomalyDetectionTeamSynergy
 
                     var inferring_sequences = csv_reader.ParseSequencesFromCSV(filePath);
                     csv_reader.DisplaySequenceData(inferring_sequences);
-
-                    Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
-                    var trimed_inferring_sequences = csv_reader.TrimSequences(inferring_sequences, 2);
-                    csv_reader.DisplaySequenceData(trimed_inferring_sequences);
+                    all_inferring_sequences.AddRange(inferring_sequences);
                 }
 
+                Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
+                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, 2);
+                csv_reader.DisplaySequenceData(trimed_inferring_sequences);
             }
             catch (Exception ex)
             {
