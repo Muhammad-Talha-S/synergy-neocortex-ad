@@ -9,7 +9,7 @@ HTM (Hierarchical Temporal Memory) is a machine learning algorithm, which uses a
 
 To run this project, we need.
 * [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
-* Nuget package: [NeoCortexApi Version= 1.1.4](https://www.nuget.org/packages/NeoCortexApi/)
+* Nuget package: [NeoCortexApi Version= 1.1.5](https://www.nuget.org/packages/NeoCortexApi/)
 
 For code debugging, we recommend using visual studio 2022/visual studio code IDE. 
 
@@ -18,9 +18,9 @@ For code debugging, we recommend using visual studio 2022/visual studio code IDE
 To run this project, 
 
 * Install .NET SDK. Then using code editor/IDE, create a new console project and place all the C# codes inside your project folder. 
-* Add/reference nuget package NeoCortexApi v1.1.4 to this project.
+* Add/reference nuget package NeoCortexApi v1.1.5 to this project.
 * Place numerical sequence CSV Files (datasets) under relevant folders respectively. All the folders should be inside the project folder. More details given below.
 
-Our project is based on NeoCortex API. More details [NeoCortexAPI](https://github.com/ddobric/neocortexapi/blob/master/source/Documentation/gettingStarted.md).
+This project is based on NeoCortex API. More details [NeoCortexAPI](https://github.com/ddobric/neocortexapi/blob/master/source/Documentation/gettingStarted.md).
 
 # Details
