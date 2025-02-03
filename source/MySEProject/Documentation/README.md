@@ -24,3 +24,22 @@ To run this project,
 This project is based on NeoCortex API. More details [NeoCortexAPI](https://github.com/ddobric/neocortexapi/blob/master/source/Documentation/gettingStarted.md).
 
 # Details
+
+We have used [MultiSequenceLearning](https://github.com/ddobric/neocortexapi/blob/master/source/Samples/NeoCortexApiSample/MultisequenceLearning.cs) class in NeoCortex API for training our HTM Engine. We are going to start by reading and using data from both our training (learning) folder (present as numerical sequences in CSV Files in 'training' folder inside project directory) and predicting folder (present as numerical sequences in CSV Files in 'predicting' folder inside project directory) to train HTM Engine. For testing purposes, we are going to read numerical sequence data from predicting folder and remove the first few elements (essentially, making it subsequence of the original sequence; we already added anomalies in this data at random indexes), and then use it to detect anomalies.
+
+Please note that all files are read with .csv extension inside the folders, and exception handlers are in place if the format of the files are not in proper order.
+
+For this project, we are using artificial integer sequence data of network load (rounded off to nearest integer, in precentage), which are stored inside the csv files. Example of a csv file within training folder.
+
+```
+49,52,55,48,52,47,46,50,52,47
+49,52,55,48,52,47,46,50,49,47
+.............................
+.............................
+48,54,55,48,52,47,46,50,49,45
+51,54,55,48,52,47,46,50,49,45
+```
+Normally, the values stay within the range of 45 to 55. For testing, we consider anything outside this range to be an anomaly. We have uploaded the graphs of our data in this repository for reference. 
+
+1. Graph for numerical sequence data from training folder (without anomalies) can be found [here](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/output/graph_of_data_training_folder.jpg).
+2. Graph of combined numerical sequence data from training folder (without anomalies) and predicting folder (with anomalies) can be found [here](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/output/combined_data_training_and_predicting_folder.jpg).
