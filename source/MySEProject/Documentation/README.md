@@ -43,3 +43,45 @@ Normally, the values stay within the range of 45 to 55. For testing, we consider
 
 1. Graph for numerical sequence data from training folder (without anomalies) can be found [here](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/output/graph_of_data_training_folder.jpg).
 2. Graph of combined numerical sequence data from training folder (without anomalies) and predicting folder (with anomalies) can be found [here](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/output/combined_data_training_and_predicting_folder.jpg).
+
+### Encoding:
+
+Encoding of our input data is very important, such that it can be processed by our HTM Engine. More on [this](https://github.com/ddobric/neocortexapi/blob/master/source/Documentation/Encoders.md). 
+
+As we are going to train and test data between the range of integer values between 0-100 with no periodicity, we are using the following settings. Minimum and maximum values are set to 0 and 100 respectively, as we are expecting all the values to be in this range only. In other used cases, these values need to be changed.
+
+```csharp
+
+int inputBits = 121;
+int numColumns = 1210;
+.......................
+.......................
+double max = 100;
+
+Dictionary<string, object> settings = new Dictionary<string, object>()
+            {
+                { "W", 21},
+                ...........
+                { "MinVal", 0.0},
+                ...........
+                { "MaxVal", max}
+            };
+ ```
+ 
+ Complete settings:
+ 
+ ```csharp
+
+Dictionary<string, object> settings = new Dictionary<string, object>()
+            {
+                { "W", 21},
+                { "N", inputBits},
+                { "Radius", -1.0},
+                { "MinVal", 0.0},
+                { "Periodic", false},
+                { "Name", "integer"},
+                { "ClipInput", false},
+                { "MaxVal", max}
+            };
+```
+
