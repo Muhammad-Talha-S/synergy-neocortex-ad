@@ -47,7 +47,7 @@ namespace AnomalyDetectionTeamSynergy
                 }
 
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
-                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, 2);
+                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, 0);
                 csv_reader.DisplaySequenceData(trimed_inferring_sequences);
 
                 var anomaly_detection = new AnomalyDetection();
