@@ -7,6 +7,15 @@ namespace AnomalyDetectionTeamSynergy
     {
         static void Main(string[] args)
         {
+            var handler = new ConsoleArgumentsHandler(args);
+
+            // Access the parsed values
+            int N = handler.N;
+            string trainingFile = handler.TrainingFile;
+            string inferringFile = handler.InferringFile;
+            string trainingFolder = handler.TrainingFolder;
+            string inferringFolder = handler.InferringFolder;
+
             string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
             string defaultTrainingFolder = Path.Combine(projectbaseDirectory, "TrainingData");
             string defaultInferringFolder = Path.Combine(projectbaseDirectory, "InferringData");
@@ -18,7 +27,8 @@ namespace AnomalyDetectionTeamSynergy
 
             try
             {
-                fileHandler.ProcessArguments(args);
+                fileHandler.ProcessFiles(trainingFile, inferringFile, trainingFolder, inferringFolder);
+
                 var training_files = fileHandler.TrainingDataFiles;
                 var inferring_files = fileHandler.InferringDataFiles;
 
