@@ -22,14 +22,13 @@ public class FileHandler
     public List<string> InferringDataFiles { get; private set; } = new List<string>();
 
     /// <summary>
-    /// Initializes the FileHandler with specified default folders.
+    /// Initializes the FileHandler with default folders based on the project's base directory.
     /// </summary>
-    /// <param name="defaultTrainingFolder">Path to the default training folder.</param>
-    /// <param name="defaultInferringFolder">Path to the default inferring folder.</param>
-    public FileHandler(string defaultTrainingFolder, string defaultInferringFolder)
+    public FileHandler()
     {
-        this.defaultTrainingFolder = defaultTrainingFolder;
-        this.defaultInferringFolder = defaultInferringFolder;
+        string projectBaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+        this.defaultTrainingFolder = Path.Combine(projectBaseDirectory, "TrainingData");
+        this.defaultInferringFolder = Path.Combine(projectBaseDirectory, "InferringData");
     }
 
     /// <summary>

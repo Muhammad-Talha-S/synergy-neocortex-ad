@@ -16,19 +16,16 @@ namespace AnomalyDetectionTeamSynergy
 
         // Default values
         private const int DefaultN = 0;
-        private const string DefaultTrainingFile = "";
-        private const string DefaultInferringFile = "";
-        private const string DefaultTrainingFolder = "";
-        private const string DefaultInferringFolder = "";
+        private const string DefaultStringValue = "";
 
         public ConsoleArgumentsHandler(string[] args)
         {
             // Initialize with default values
             N = DefaultN;
-            TrainingFile = DefaultTrainingFile;
-            InferringFile = DefaultInferringFile;
-            TrainingFolder = DefaultTrainingFolder;
-            InferringFolder = DefaultInferringFolder;
+            TrainingFile = DefaultStringValue;
+            InferringFile = DefaultStringValue;
+            TrainingFolder = DefaultStringValue;
+            InferringFolder = DefaultStringValue;
 
             ParseArguments(args);
         }

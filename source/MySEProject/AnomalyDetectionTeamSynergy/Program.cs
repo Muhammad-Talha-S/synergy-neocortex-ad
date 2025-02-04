@@ -16,11 +16,7 @@ namespace AnomalyDetectionTeamSynergy
             string trainingFolder = handler.TrainingFolder;
             string inferringFolder = handler.InferringFolder;
 
-            string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
-            string defaultTrainingFolder = Path.Combine(projectbaseDirectory, "TrainingData");
-            string defaultInferringFolder = Path.Combine(projectbaseDirectory, "InferringData");
-
-            var fileHandler = new FileHandler(defaultTrainingFolder, defaultInferringFolder);
+            var fileHandler = new FileHandler();
 
             List<List<double>> all_training_sequences = new List<List<double>>();
             List<List<double>> all_inferring_sequences = new List<List<double>>();
@@ -57,7 +53,7 @@ namespace AnomalyDetectionTeamSynergy
                 }
 
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
-                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, 2);
+                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, N);
                 csv_reader.DisplaySequenceData(trimed_inferring_sequences);
 
                 var anomaly_detection = new AnomalyDetection();
