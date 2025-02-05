@@ -85,3 +85,35 @@ Dictionary<string, object> settings = new Dictionary<string, object>()
             };
 ```
 
+
+### HTM Configuration:
+
+We have used the following configuration. More on [this](https://github.com/ddobric/neocortexapi/blob/master/source/Documentation/SpatialPooler.md#parameter-desription)
+
+```csharp
+{
+                Random = new ThreadSafeRandom(42),
+
+                CellsPerColumn = 25,
+                GlobalInhibition = true,
+                LocalAreaDensity = -1,
+                NumActiveColumnsPerInhArea = 0.02 * numColumns,
+                PotentialRadius = (int)(0.15 * inputBits),
+                //InhibitionRadius = 15,
+
+                MaxBoost = 10.0,
+                DutyCyclePeriod = 25,
+                MinPctOverlapDutyCycles = 0.75,
+                MaxSynapsesPerSegment = (int)(0.02 * numColumns),
+
+                ActivationThreshold = 15,
+                ConnectedPermanence = 0.5,
+
+                // Learning is slower than forgetting in this case.
+                PermanenceDecrement = 0.25,
+                PermanenceIncrement = 0.15,
+
+                // Used by punishing of segments.
+                PredictedSegmentDecrement = 0.1
+};
+```
