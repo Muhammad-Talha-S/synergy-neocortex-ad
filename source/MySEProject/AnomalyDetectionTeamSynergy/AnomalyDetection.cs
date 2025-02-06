@@ -35,30 +35,37 @@ namespace AnomalyDetectionTeamSynergy
 
             for (int i = 0; i < sequence.Count - 1; i++)
             {
-                var current_number = sequence[i];
-                var next_number = sequence[i + 1];
-                var result = predictor.Predict(current_number);
-                Console.WriteLine($"Current Element: {current_number}");
+                double currentNumber = sequence[i];
+                double nextNumber = sequence[i + 1];
+                var predictionResults = predictor.Predict(currentNumber);
 
-                Console.WriteLine($"Result: {result}");
-                Console.WriteLine($"Result Count: {result.Count}");
+                Console.WriteLine($"Current Element: {currentNumber}");
 
-                if (result.Count > 0)
+                if (predictionResults.Count > 0)
                 {
-                    var predicted_input = result.First().PredictedInput;
-                    var prrdicted_sequence = predicted_input.Split('-');
-                    var similarity = result.First().Similarity;
+                    var bestPrediction = predictionResults.First();
+                    string predictedInput = bestPrediction.PredictedInput;
+                    string[] predictedSequenceParts = predictedInput.Split('-');
+                    double similarity = bestPrediction.Similarity;
 
-                    double predicted_next_element = double.Parse(prrdicted_sequence.Last());
-                    Console.WriteLine($"predicted next element: {predicted_next_element}");
-                    Console.WriteLine($"actual next element: {next_number}");
-                    Console.WriteLine($"predicted sequence: {predicted_input}");
-                    bool anomaly_detected = IsAnomaly(predicted_next_element, next_number, threshold, tolerance);
-                    if (anomaly_detected)
+                    // Parse the predicted next element from the sequence
+                    if (double.TryParse(predictedSequenceParts.Last(), out double predictedNextElement))
                     {
-                        Console.WriteLine($"Anomaly Detected!");
-                    }
+                        Console.WriteLine($"Predicted Next Element: {predictedNextElement}");
+                        Console.WriteLine($"Actual Next Element: {nextNumber}");
+                        Console.WriteLine($"Predicted Sequence: {predictedInput}");
 
+                        // Check for anomaly
+                        bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber, threshold, tolerance);
+                        if (anomalyDetected)
+                        {
+                            Console.WriteLine("Anomaly Detected!");
+                            Console.WriteLine("Skipping anomaly value. Using predicted value for the next element in the sequence.");
+
+                            // Replace the anomaly with the predicted value
+                            sequence[i + 1] = predictedNextElement;
+                        }
+                    }
                 }
             }
         }
