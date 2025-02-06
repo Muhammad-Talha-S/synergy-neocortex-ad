@@ -7,24 +7,27 @@ namespace AnomalyDetectionTeamSynergy
     public class AnomalyDetection
     {
         // Method to calculate anomaly based on similarity threshold
-        public bool IsAnomaly(double predictedValue, double actualValue, double tolerance)
+        public bool IsAnomaly(double predictedValue, double actualValue, double absoluteThreshold, double relativeThreshold)
         {
-            var anomalyScore = Math.Abs(predictedValue - actualValue);
-            var deviation = anomalyScore / actualValue;
+            // Calculate the absolute difference
+            double absoluteDifference = Math.Abs(predictedValue - actualValue);
 
-            if (deviation < tolerance)
+            // Calculate the relative difference (percentage deviation)
+            double relativeDifference = absoluteDifference / actualValue;
+
+            // Check if both thresholds are exceeded
+            if (absoluteDifference > absoluteThreshold && relativeDifference > relativeThreshold)
             {
-                return false;
+                return true; // Anomaly detected
             }
-            else
-            {
-                return true;
-            }
+
+            return false; // No anomaly
         }
 
         public void DetectAnomaly(Predictor predictor, List<double> sequence)
         {
             double tolerance = 0.1; // Tolerance level set to 10%
+            double threshold = 1; // Absolute Threshold
 
             Console.WriteLine("------------------------------");
             Console.WriteLine();
@@ -50,7 +53,7 @@ namespace AnomalyDetectionTeamSynergy
                     Console.WriteLine($"predicted next element: {predicted_next_element}");
                     Console.WriteLine($"actual next element: {next_number}");
                     Console.WriteLine($"predicted sequence: {predicted_input}");
-                    bool anomaly_detected = IsAnomaly(predicted_next_element, next_number, tolerance);
+                    bool anomaly_detected = IsAnomaly(predicted_next_element, next_number, threshold, tolerance);
                     if (anomaly_detected)
                     {
                         Console.WriteLine($"Anomaly Detected!");
