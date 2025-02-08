@@ -117,3 +117,51 @@ We have used the following configuration. More on [this](https://github.com/ddob
                 PredictedSegmentDecrement = 0.1
 };
 ```
+
+### Multisequence learning
+
+The [RunExperiment](https://github.com/SouravPaulSumit/Team_anomaly/blob/be27813af65f611df7cbd33009d72a3ee72e3756/mySEProject/AnomalyDetectionSample/multisequencelearning.cs#L75) method inside the [multisequencelearning](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/multisequencelearning.cs) class file demonstrates how multisequence learning works. To summarize, 
+
+* HTM Configuration is taken and memory of connections are initialized. After that, HTM Classifier, Cortex layer and HomeostaticPlasticityController are initialized.
+```csharp
+.......
+var mem = new Connections(cfg);
+.......
+HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
+CortexLayer<object, object> layer1 = new CortexLayer<object, object>("L1");
+HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 150, (isStable, numPatterns, actColAvg, seenInputs) => ..
+.......
+.......
+```
+
+* After that, Spatial Pooler and Temporal Memory is initialized.
+```csharp
+.....
+TemporalMemory tm = new TemporalMemory();
+SpatialPoolerMT sp = new SpatialPoolerMT(hpc);
+.....
+```
+* After that, spatial pooler memory is added to cortex layer and trained for maximum number of cycles.
+```csharp
+.....
+layer1.HtmModules.Add("sp", sp);
+int maxCycles = 3500;
+for (int i = 0; i < maxCycles && isInStableState == false; i++)
+.....
+`````
+* After that, temporal memory is added to cortex layer to learn all the input sequences.
+```csharp
+.....
+layer1.HtmModules.Add("tm", tm);
+foreach (var sequenceKeyPair in sequences){
+.....
+}
+.....
+```
+* Finally, the trained cortex layer and HTM classifier is returned.
+```csharp
+.....
+return new Predictor(layer1, mem, cls)
+.....
+`````
+We will use this for prediction in later parts of our project.
