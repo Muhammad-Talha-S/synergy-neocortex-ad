@@ -28,7 +28,8 @@ namespace AnomalyDetectionTeamSynergy
         {
             double tolerance = 0.1; // Tolerance level set to 10%
             double threshold = 1; // Absolute Threshold
-            List<double> predictedSequence = new List<double>();
+            List<string> predictedSequence = new List<string>();
+            predictedSequence.Add("-");
 
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION STARTED         ");
@@ -60,7 +61,7 @@ namespace AnomalyDetectionTeamSynergy
                     Console.WriteLine($"   - Similarity Score      : {similarity}");
                     Console.WriteLine($"   - Predicted Sequence    : {predictedInput}");
 
-                    predictedSequence.Add(predictedNextElement);
+                    predictedSequence.Add(predictedNextElement.ToString());
                     // Check for anomaly
                     bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber, threshold, tolerance);
                     if (anomalyDetected)
@@ -68,6 +69,7 @@ namespace AnomalyDetectionTeamSynergy
                         Console.WriteLine("\n   !!! Anomaly Detected !!!");
                         Console.WriteLine($"   - Expected: {predictedNextElement}, Found: {nextNumber}");
                         Console.WriteLine("   - Skip the anomalous value.");
+                        predictedSequence.Add("-");
                         i++; // skip next element due to anomaly
                     }
                     else
@@ -78,13 +80,49 @@ namespace AnomalyDetectionTeamSynergy
                 else
                 {
                     Console.WriteLine("No Predictions available");
+                    predictedSequence.Add("-");
                 }
                 Console.WriteLine("-------------------------------------------");
             }
-            Console.WriteLine($"\nSequence to Analyze: [{string.Join(", ", predictedSequence)}]\n");
+            Console.WriteLine($"\nPredicted Sequence: [{string.Join(", ", predictedSequence)}]\n");
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION COMPLETED       ");
             Console.WriteLine("===========================================\n");
+
+
+            string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+            string modelPredictions = Path.Combine(projectbaseDirectory, "ModelPredictions");
+            string fileName = "sequence_1_predictions.csv";
+            SaveToCsv(modelPredictions, fileName, sequence, predictedSequence);
+            Console.WriteLine("CSV file created successfully!");
+        }
+
+        static void SaveToCsv(string folderPath, string fileName, List<double> sequence, List<string> predictedSequence)
+        {
+            if (sequence.Count != predictedSequence.Count)
+            {
+                throw new ArgumentException("Both lists must be of equal size.");
+            }
+
+            // Ensure the directory exists
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string filePath = Path.Combine(folderPath, fileName);
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                // Write column headers
+                writer.WriteLine("Actual,Predicted");
+
+                // Write data rows
+                for (int i = 0; i < sequence.Count; i++)
+                {
+                    writer.WriteLine($"{sequence[i]},{predictedSequence[i]}");
+                }
+            }
         }
 
     }
