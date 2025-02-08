@@ -28,6 +28,7 @@ namespace AnomalyDetectionTeamSynergy
         {
             double tolerance = 0.1; // Tolerance level set to 10%
             double threshold = 1; // Absolute Threshold
+            List<double> predictedSequence = new List<double>();
 
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION STARTED         ");
@@ -56,9 +57,10 @@ namespace AnomalyDetectionTeamSynergy
 
                     Console.WriteLine($"   - Predicted Next Element: {predictedNextElement}");
                     Console.WriteLine($"   - Actual Next Element   : {nextNumber}");
-                    Console.WriteLine($"   - Predicted Sequence    : {predictedInput}");
                     Console.WriteLine($"   - Similarity Score      : {similarity}");
+                    Console.WriteLine($"   - Predicted Sequence    : {predictedInput}");
 
+                    predictedSequence.Add(predictedNextElement);
                     // Check for anomaly
                     bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber, threshold, tolerance);
                     if (anomalyDetected)
@@ -72,7 +74,6 @@ namespace AnomalyDetectionTeamSynergy
                     {
                         Console.WriteLine("No Anomaly Detected!");
                     }
-
                 }
                 else
                 {
@@ -80,6 +81,7 @@ namespace AnomalyDetectionTeamSynergy
                 }
                 Console.WriteLine("-------------------------------------------");
             }
+            Console.WriteLine($"\nSequence to Analyze: [{string.Join(", ", predictedSequence)}]\n");
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION COMPLETED       ");
             Console.WriteLine("===========================================\n");
