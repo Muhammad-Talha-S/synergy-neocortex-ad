@@ -165,3 +165,51 @@ return new Predictor(layer1, mem, cls)
 .....
 `````
 We will use this for prediction in later parts of our project.
+
+
+## Execution of the project
+
+Our project is executed in the following way. 
+
+* In the beginning, we have ReadFolder method of [CSVFolderReader](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/CSVFolderReader.cs) class to read all the files placed inside a folder. Alternatively, we can use ReadFile method of [CSVFileReader](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/CSVFileReader.cs) to read a single file; it works in a similar way, except that it reads a single file. These classes store the read sequences to a list of numeric sequences, which will be used in a number of occasions later. These classes have exception handling implemented inside for handling non-numeric data. Data can be trimmed using Trimsequences method. It trims one to four elements(Number 1 to 4 is decided randomly) from the beginning of a numeric sequence and returns it.
+
+```csharp
+ public List<List<double>> ReadFolder()
+        {
+         ....  
+          return folderSequences;
+        }
+
+public static List<List<double>> TrimSequences(List<List<double>> sequences)
+        {
+        ....
+          return trimmedSequences;
+        }
+```
+
+* After that, the method BuildHTMInput of [CSVToHTMInput](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/CSVToHTMInput.cs) class is there which converts all the read sequences to a format suitable for HTM training.
+```csharp
+Dictionary<string, List<double>> dictionary = new Dictionary<string, List<double>>();
+for (int i = 0; i < sequences.Count; i++)
+    {
+     // Unique key created and added to dictionary for HTM Input                
+     string key = "S" + (i + 1);
+     List<double> value = sequences[i];
+     dictionary.Add(key, value);
+    }
+     return dictionary;
+```
+* After that, we have RunHTMModelLearning method of [HTMModeltraining](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/HTMModeltraining.cs) class to train our model using the converted sequences. The numerical data sequences from training (for learning) and predicting folders are combined before training the HTM engine. This class returns our trained model object predictor.
+```csharp
+.....
+MultiSequenceLearning learning = new MultiSequenceLearning();
+predictor = learning.Run(htmInput);
+.....
+.....
+List<List<double>> combinedSequences = new List<List<double>>(sequences1);
+combinedSequences.AddRange(sequences2);
+.....
+```
+* In the end, we use [HTMAnomalyTesting](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/HTMAnomalyTesting.cs) to detected anomalies in sequences read from files inside predicting folder. All the classes explained earlier- CSV files reading (CSVFileReader), combining and converting them for HTM training (CSVToHTMInput) and training the HTM engine (using HTMModelTraining) will be used here. We use the same class (CSVFolderReader) to read files for our predicting sequences. TrimSequences method is then used to trim sequences for anomaly testing. Method for trimming is already explained earlier.
+```csharp
+.....
