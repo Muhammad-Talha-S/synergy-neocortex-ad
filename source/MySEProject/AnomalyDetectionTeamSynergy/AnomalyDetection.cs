@@ -93,37 +93,9 @@ namespace AnomalyDetectionTeamSynergy
             string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
             string modelPredictions = Path.Combine(projectbaseDirectory, "ModelPredictions");
             string fileName = "sequence_1_predictions.csv";
-            SaveToCsv(modelPredictions, fileName, sequence, predictedSequence);
+            var csv_writer = new CSVHandler();
+            csv_writer.SaveToCsv(modelPredictions, fileName, sequence, predictedSequence);
             Console.WriteLine("CSV file created successfully!");
         }
-
-        static void SaveToCsv(string folderPath, string fileName, List<double> sequence, List<string> predictedSequence)
-        {
-            if (sequence.Count != predictedSequence.Count)
-            {
-                throw new ArgumentException("Both lists must be of equal size.");
-            }
-
-            // Ensure the directory exists
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
-            string filePath = Path.Combine(folderPath, fileName);
-
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                // Write column headers
-                writer.WriteLine("Actual,Predicted");
-
-                // Write data rows
-                for (int i = 0; i < sequence.Count; i++)
-                {
-                    writer.WriteLine($"{sequence[i]},{predictedSequence[i]}");
-                }
-            }
-        }
-
     }
 }

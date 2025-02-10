@@ -22,7 +22,7 @@ namespace AnomalyDetectionTeamSynergy
                 var training_files = fileHandler.TrainingDataFiles;
                 var inferring_files = fileHandler.InferringDataFiles;
 
-                var csv_reader = new CSVReader();
+                var csv_reader = new CSVHandler();
                 var csv_htm_input = new CSVToHTMInput();
 
                 foreach (var filePath in fileHandler.TrainingDataFiles)
