@@ -236,3 +236,46 @@ foreach (List<double> list in triminputtestseq)
          DetectAnomaly(myPredictor, lst);
        }
 ```
+Exception handling is present, such that errors thrown from DetectAnomaly method can be handled (like passing of non-numeric values, or number of elements in list less than two).
+
+DetectAnomaly is the main method which detects anomalies in our data. It traverses each value of a list one by one in a sliding window manner, and uses trained model predictor to predict the next element for comparison. We use an anomalyscore to quantify the comparison and detect anomalies; if the prediction crosses a certain tolerance level, it is declared as an anomaly.
+
+In our sliding window approach, naturally the first element is skipped, so we ensure that the first element is checked for anomaly in the beginning.
+
+We can get our prediction in a list of results in format of "NeoCortexApi.Classifiers.ClassifierResult`1[System.String]" from our trained model Predictor using the following:
+
+```csharp
+var res = predictor.Predict(item);
+```
+Here, assume that item passed to the model is of int type with value 8. We can use this to analyze how prediction works. When this is executed,
+```csharp
+foreach (var pred in res)
+ {
+   Console.WriteLine($"{pred.PredictedInput} - {pred.Similarity}");
+    }
+```
+We get the following output.
+```
+S2_2-9-10-7-11-8-1 - 100
+S1_1-2-3-4-2-5-0 - 5
+S1_-1.0-0-1-2-3-4 - 0
+S1_-1.0-0-1-2-3-4-2 - 0
+```
+We know that the item we passed here is 8. The first line gives us the best prediction with similarity accuracy. We can easily get the predicted value which will come after 8 (here, it is 1), and previous value (11, in this case). We use basic string operations to get our required values.
+
+We will then use this to detect anomalies.
+
+* When we iteratively pass values to DetectAnomaly method using our sliding window approach, we will not be able to detect anomaly in the first element. So, in the beginning, we use the second element of the list to predict and compare the previous element (which is the first element). A flag is set to control the command execution; if the first element has anomaly, then we will not use it to detect our second element. We will directly start from second element. Otherwise, we will start from first element as usual.
+
+* Now, when we traverse the list one by one to the right, we pass the value to the predictor to get the next value and compare the prediction with the actual value. If there's anomaly, then it is outputted to the user, and the anomalous element is skipped. Upon reaching to the last element, we can end our traversal and move on to next list.
+
+We use anomalyscore (difference ratio) for comparison with our already preset threshold. When it exceeds, probable anomalies are found.
+
+To run this project, use the following class/methods given in [Program.cs](https://github.com/SouravPaulSumit/Team_anomaly/blob/master/mySEProject/AnomalyDetectionSample/Program.cs).
+
+```csharp
+ HTMAnomalyTesting tester = new HTMAnomalyTesting();
+ tester.Run();
+```
+ 
+# Results
