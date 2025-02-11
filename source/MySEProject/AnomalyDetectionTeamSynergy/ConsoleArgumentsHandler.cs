@@ -37,6 +37,11 @@ namespace AnomalyDetectionTeamSynergy
         /// </summary>
         public string InferringFolder { get; private set; }
 
+        /// <summary>
+        /// Tolerance value for Anomaly Detection.
+        /// </summary>
+        public string ToleranceValue { get; private set; }
+
         // Default values for parameters
         private const int DefaultN = 0;
         private const string DefaultStringValue = "";
@@ -54,6 +59,7 @@ namespace AnomalyDetectionTeamSynergy
             InferringFile = DefaultStringValue;
             TrainingFolder = DefaultStringValue;
             InferringFolder = DefaultStringValue;
+            ToleranceValue = DefaultStringValue;
 
             // Parse the command-line arguments
             ParseArguments(args);
@@ -69,7 +75,7 @@ namespace AnomalyDetectionTeamSynergy
             {
                 switch (args[i].ToLower())
                 {
-                    case "-n":
+                    case "--n":
                         if (i + 1 < args.Length && int.TryParse(args[i + 1], out int nValue))
                         {
                             N = nValue;
@@ -106,6 +112,14 @@ namespace AnomalyDetectionTeamSynergy
                         {
                             InferringFolder = args[i + 1];
                             i++; // Skip the next argument since it's assigned to InferringFolder
+                        }
+                        break;
+
+                    case "--tolerance":
+                        if (i + 1 < args.Length)
+                        {
+                            ToleranceValue = args[i + 1];
+                            i++; // Skip the next argument since it's assigned to Tolerance Value
                         }
                         break;
 
