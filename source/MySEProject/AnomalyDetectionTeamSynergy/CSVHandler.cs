@@ -95,12 +95,10 @@ namespace AnomalyDetectionTeamSynergy
             }
         }
 
-        public void SaveToCsv(string folderPath, string fileName, List<double> sequence, List<string> predictedSequence)
+        public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence)
         {
-            if (sequence.Count != predictedSequence.Count)
-            {
-                throw new ArgumentException("Both lists must be of equal size.");
-            }
+            string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+            string folderPath = Path.Combine(projectbaseDirectory, "ModelPredictions");
 
             // Ensure the directory exists
             if (!Directory.Exists(folderPath))
@@ -109,6 +107,11 @@ namespace AnomalyDetectionTeamSynergy
             }
 
             string filePath = Path.Combine(folderPath, fileName);
+
+            if (sequence.Count != predictedSequence.Count)
+            {
+                throw new ArgumentException("Both lists must be of equal size.");
+            }
 
             using (StreamWriter writer = new StreamWriter(filePath))
             {
