@@ -28,7 +28,7 @@ namespace AnomalyDetectionTeamSynergy
                 var training_files = fileHandler.TrainingDataFiles;
                 var inferring_files = fileHandler.InferringDataFiles;
 
-                var csv_reader = new CSVReader();
+                var csv_reader = new CSVHandler();
                 var csv_htm_input = new CSVToHTMInput();
 
                 foreach (var filePath in fileHandler.TrainingDataFiles)
@@ -53,7 +53,7 @@ namespace AnomalyDetectionTeamSynergy
                 }
 
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
-                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, N);
+                var trimed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, 0);
                 csv_reader.DisplaySequenceData(trimed_inferring_sequences);
 
                 var anomaly_detection = new AnomalyDetection();
@@ -72,7 +72,6 @@ namespace AnomalyDetectionTeamSynergy
 
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
-          //  RunMultiSequenceLearningExperiment.Run();
         }
        
     }
