@@ -9,7 +9,7 @@ namespace AnomalyDetectionTeamSynergy
     /// <summary>
     /// Provides functionality to read and parse sequences from a CSV file.
     /// </summary>
-    public class CSVReader
+    public class CSVHandler
     {
         /// <summary>
         /// Parses numerical sequences from a CSV file.
@@ -92,6 +92,37 @@ namespace AnomalyDetectionTeamSynergy
             for (int i = 0; i < sequences.Count; i++)
             {
                 Console.WriteLine($"Sequence {i + 1}: {string.Join(", ", sequences[i])}");
+            }
+        }
+
+        public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence)
+        {
+            string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+            string folderPath = Path.Combine(projectbaseDirectory, "ModelPredictions");
+
+            // Ensure the directory exists
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string filePath = Path.Combine(folderPath, fileName);
+
+            if (sequence.Count != predictedSequence.Count)
+            {
+                throw new ArgumentException("Both lists must be of equal size.");
+            }
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                // Write column headers
+                writer.WriteLine("Actual,Predicted");
+
+                // Write data rows
+                for (int i = 0; i < sequence.Count; i++)
+                {
+                    writer.WriteLine($"{sequence[i]},{predictedSequence[i]}");
+                }
             }
         }
     }

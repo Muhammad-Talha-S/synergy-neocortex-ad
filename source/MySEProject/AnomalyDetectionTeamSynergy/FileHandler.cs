@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 /// <summary>
 /// Handles file operations for training and inferring data in a system that processes CSV files.
@@ -23,54 +22,28 @@ public class FileHandler
     public List<string> InferringDataFiles { get; private set; } = new List<string>();
 
     /// <summary>
-    /// Initializes the FileHandler with specified default folders.
+    /// Initializes the FileHandler with default folders based on the project's base directory.
     /// </summary>
-    /// <param name="defaultTrainingFolder">Path to the default training folder.</param>
-    /// <param name="defaultInferringFolder">Path to the default inferring folder.</param>
-    public FileHandler(string defaultTrainingFolder, string defaultInferringFolder)
+    public FileHandler()
     {
-        this.defaultTrainingFolder = defaultTrainingFolder;
-        this.defaultInferringFolder = defaultInferringFolder;
+        string projectBaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+        this.defaultTrainingFolder = Path.Combine(projectBaseDirectory, "TrainingData");
+        this.defaultInferringFolder = Path.Combine(projectBaseDirectory, "InferringData");
     }
 
     /// <summary>
-    /// Processes command-line arguments to determine training and inferring data sources.
+    /// Processes training and inferring data sources based on the provided arguments.
     /// </summary>
-    /// <param name="args">Array of command-line arguments.</param>
+    /// <param name="trainingFile">Path to a specific training file.</param>
+    /// <param name="inferringFile">Path to a specific inferring file.</param>
+    /// <param name="trainingFolder">Path to a folder containing training files.</param>
+    /// <param name="inferringFolder">Path to a folder containing inferring files.</param>
     /// <exception cref="Exception">Thrown when no valid training CSV files are found.</exception>
-    public void ProcessArguments(string[] args)
+    public void ProcessFiles(string? trainingFile, string? inferringFile, string? trainingFolder, string? inferringFolder)
     {
         var allTrainingFiles = new List<string>();
         var allInferringFiles = new List<string>();
 
-        string? trainingFile = null;
-        string? inferringFile = null;
-        string? trainingFolder = null;
-        string? inferringFolder = null;
-
-        Console.WriteLine("Parsing command-line arguments...");
-
-        // Parse console arguments
-        for (int i = 0; i < args.Length; i++)
-        {
-            switch (args[i])
-            {
-                case "--training-file":
-                    trainingFile = i + 1 < args.Length ? args[i + 1] : null;
-                    break;
-                case "--inferring-file":
-                    inferringFile = i + 1 < args.Length ? args[i + 1] : null;
-                    break;
-                case "--training-folder":
-                    trainingFolder = i + 1 < args.Length ? args[i + 1] : null;
-                    break;
-                case "--inferring-folder":
-                    inferringFolder = i + 1 < args.Length ? args[i + 1] : null;
-                    break;
-            }
-        }
-
-        // Gather all training files
         Console.WriteLine("Gathering training data files...");
         if (!string.IsNullOrEmpty(trainingFile))
         {
@@ -93,7 +66,6 @@ public class FileHandler
             }
         }
 
-        // Gather all inferring files
         Console.WriteLine("Gathering inferring data files...");
         if (!string.IsNullOrEmpty(inferringFile))
         {
