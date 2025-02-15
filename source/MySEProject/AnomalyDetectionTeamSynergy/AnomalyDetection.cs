@@ -21,9 +21,9 @@ namespace AnomalyDetectionTeamSynergy
         /// - Tolerance is set to 0.1 (10%), which is the relative deviation threshold.
         /// - Threshold is set to 1, which is the absolute deviation threshold.
         /// </summary>
-        public AnomalyDetection()
+        public AnomalyDetection(double toleranceValue)
         {
-            this.tolerance = 0.1; // Default tolerance level set to 10%
+            this.tolerance = toleranceValue;
             this.threshold = 1;  // Default absolute threshold for anomalies
         }
 

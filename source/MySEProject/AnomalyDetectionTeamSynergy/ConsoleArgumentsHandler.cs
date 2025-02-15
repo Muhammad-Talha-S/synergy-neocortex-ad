@@ -20,27 +20,27 @@ namespace AnomalyDetectionTeamSynergy
         /// <summary>
         /// Path to the training file specified in the command-line arguments.
         /// </summary>
-        public string TrainingFile { get; private set; }
+        public string trainingFile { get; private set; }
 
         /// <summary>
         /// Path to the inferring file specified in the command-line arguments.
         /// </summary>
-        public string InferringFile { get; private set; }
+        public string inferringFile { get; private set; }
 
         /// <summary>
         /// Path to the training folder specified in the command-line arguments.
         /// </summary>
-        public string TrainingFolder { get; private set; }
+        public string trainingFolder { get; private set; }
 
         /// <summary>
         /// Path to the inferring folder specified in the command-line arguments.
         /// </summary>
-        public string InferringFolder { get; private set; }
+        public string inferringFolder { get; private set; }
 
         /// <summary>
         /// Tolerance value for Anomaly Detection.
         /// </summary>
-        public double ToleranceValue { get; private set; }
+        public double toleranceValue { get; private set; }
 
         // Default values for parameters
         private const int DefaultN = 0;
@@ -56,11 +56,11 @@ namespace AnomalyDetectionTeamSynergy
         {
             // Initialize fields with default values
             N = DefaultN;
-            TrainingFile = DefaultStringPaths;
-            InferringFile = DefaultStringPaths;
-            TrainingFolder = DefaultStringPaths;
-            InferringFolder = DefaultStringPaths;
-            ToleranceValue = DefaultToleranceValue;
+            trainingFile = DefaultStringPaths;
+            inferringFile = DefaultStringPaths;
+            trainingFolder = DefaultStringPaths;
+            inferringFolder = DefaultStringPaths;
+            toleranceValue = DefaultToleranceValue;
 
             // Parse the command-line arguments
             ParseArguments(args);
@@ -87,7 +87,7 @@ namespace AnomalyDetectionTeamSynergy
                     case "--training-file":
                         if (i + 1 < args.Length)
                         {
-                            TrainingFile = args[i + 1];
+                            trainingFile = args[i + 1];
                             i++; // Skip the next argument since it's assigned to TrainingFile
                         }
                         break;
@@ -95,7 +95,7 @@ namespace AnomalyDetectionTeamSynergy
                     case "--inferring-file":
                         if (i + 1 < args.Length)
                         {
-                            InferringFile = args[i + 1];
+                            inferringFile = args[i + 1];
                             i++; // Skip the next argument since it's assigned to InferringFile
                         }
                         break;
@@ -103,7 +103,7 @@ namespace AnomalyDetectionTeamSynergy
                     case "--training-folder":
                         if (i + 1 < args.Length)
                         {
-                            TrainingFolder = args[i + 1];
+                            trainingFolder = args[i + 1];
                             i++; // Skip the next argument since it's assigned to TrainingFolder
                         }
                         break;
@@ -111,15 +111,15 @@ namespace AnomalyDetectionTeamSynergy
                     case "--inferring-folder":
                         if (i + 1 < args.Length)
                         {
-                            InferringFolder = args[i + 1];
+                            inferringFolder = args[i + 1];
                             i++; // Skip the next argument since it's assigned to InferringFolder
                         }
                         break;
 
                     case "--tolerance":
-                        if (i + 1 < args.Length && double.TryParse(args[i + 1], out double toleranceValue))
+                        if (i + 1 < args.Length && double.TryParse(args[i + 1], out double readToleranceValue))
                         {
-                            ToleranceValue = toleranceValue;
+                            toleranceValue = readToleranceValue;
                             i++; // Skip the next argument since it's assigned to Tolerance Value
                         }
                         break;

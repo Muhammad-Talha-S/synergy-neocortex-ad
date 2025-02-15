@@ -21,10 +21,11 @@ namespace AnomalyDetectionTeamSynergy
 
             // Retrieve parsed argument values
             int N = handler.N;
-            string trainingFile = handler.TrainingFile;
-            string inferringFile = handler.InferringFile;
-            string trainingFolder = handler.TrainingFolder;
-            string inferringFolder = handler.InferringFolder;
+            string trainingFile = handler.trainingFile;
+            string inferringFile = handler.inferringFile;
+            string trainingFolder = handler.trainingFolder;
+            string inferringFolder = handler.inferringFolder;
+            double toleranceValue = handler.toleranceValue;
 
             var fileHandler = new FileHandler();
 
@@ -70,7 +71,7 @@ namespace AnomalyDetectionTeamSynergy
                 var trimmed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, N);
                 csv_reader.DisplaySequenceData(trimmed_inferring_sequences);
 
-                var anomaly_detection = new AnomalyDetection();
+                var anomaly_detection = new AnomalyDetection(toleranceValue);
 
                 // Perform anomaly detection on the trimmed sequences
                 int sequence_no = 1;
