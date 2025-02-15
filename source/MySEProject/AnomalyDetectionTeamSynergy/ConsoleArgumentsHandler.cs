@@ -40,11 +40,12 @@ namespace AnomalyDetectionTeamSynergy
         /// <summary>
         /// Tolerance value for Anomaly Detection.
         /// </summary>
-        public string ToleranceValue { get; private set; }
+        public double ToleranceValue { get; private set; }
 
         // Default values for parameters
         private const int DefaultN = 0;
-        private const string DefaultStringValue = "";
+        private const string DefaultStringPaths = "";
+        private const double DefaultToleranceValue = 0.1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleArgumentsHandler"/> class.
@@ -55,11 +56,11 @@ namespace AnomalyDetectionTeamSynergy
         {
             // Initialize fields with default values
             N = DefaultN;
-            TrainingFile = DefaultStringValue;
-            InferringFile = DefaultStringValue;
-            TrainingFolder = DefaultStringValue;
-            InferringFolder = DefaultStringValue;
-            ToleranceValue = DefaultStringValue;
+            TrainingFile = DefaultStringPaths;
+            InferringFile = DefaultStringPaths;
+            TrainingFolder = DefaultStringPaths;
+            InferringFolder = DefaultStringPaths;
+            ToleranceValue = DefaultToleranceValue;
 
             // Parse the command-line arguments
             ParseArguments(args);
@@ -116,9 +117,9 @@ namespace AnomalyDetectionTeamSynergy
                         break;
 
                     case "--tolerance":
-                        if (i + 1 < args.Length)
+                        if (i + 1 < args.Length && double.TryParse(args[i + 1], out double toleranceValue))
                         {
-                            ToleranceValue = args[i + 1];
+                            ToleranceValue = toleranceValue;
                             i++; // Skip the next argument since it's assigned to Tolerance Value
                         }
                         break;
