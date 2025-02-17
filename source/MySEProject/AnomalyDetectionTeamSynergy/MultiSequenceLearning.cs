@@ -54,7 +54,7 @@ namespace AnomalyDetectionTeamSynergy
                 PredictedSegmentDecrement = 0.1
             };
 
-            double max = 20;
+            double max = 60;
 
             Dictionary<string, object> settings = new Dictionary<string, object>()
             {

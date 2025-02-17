@@ -16,9 +16,8 @@ fig.add_trace(go.Scatter(x=x_axis, y=actual_values, mode='lines+markers', name='
 fig.add_trace(go.Scatter(x=x_axis, y=predicted_values, mode='lines+markers', name='Predicted Values'))
 
 # Customize layout
-fig.update_layout(title='Actual vs Predicted Values',
-                  xaxis_title='Sequence Number',
-                  yaxis_title='Values')
+fig.update_layout(title='Actual vs Predicted Values', xaxis_title='Sequence Number', yaxis_title='Values')
 
-# Show the plot
+
+
 fig.show()
