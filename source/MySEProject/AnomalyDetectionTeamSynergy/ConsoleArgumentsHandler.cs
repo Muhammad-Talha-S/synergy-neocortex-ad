@@ -1,44 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnomalyDetectionTeamSynergy
 {
     /// <summary>
     /// Handles console arguments for configuring the anomaly detection system.
-    /// Parses command-line arguments and stores values for various parameters.
+    /// This class parses command-line arguments and stores values for various parameters such as file paths, folder paths, and numerical values.
     /// </summary>
     public class ConsoleArgumentsHandler
     {
         /// <summary>
         /// Represents the numerical parameter N extracted from the command-line arguments.
+        /// This value is used to configure the anomaly detection system.
         /// </summary>
         public int N { get; private set; }
 
         /// <summary>
         /// Path to the training file specified in the command-line arguments.
+        /// This file is used for training the anomaly detection model.
         /// </summary>
         public string trainingFile { get; private set; }
 
         /// <summary>
         /// Path to the inferring file specified in the command-line arguments.
+        /// This file is used for inferring (testing) the anomaly detection model.
         /// </summary>
         public string inferringFile { get; private set; }
 
         /// <summary>
         /// Path to the training folder specified in the command-line arguments.
+        /// This folder contains multiple files for training the anomaly detection model.
         /// </summary>
         public string trainingFolder { get; private set; }
 
         /// <summary>
         /// Path to the inferring folder specified in the command-line arguments.
+        /// This folder contains multiple files for inferring (testing) the anomaly detection model.
         /// </summary>
         public string inferringFolder { get; private set; }
 
         /// <summary>
-        /// Tolerance value for Anomaly Detection.
+        /// Tolerance value for the anomaly detection system.
+        /// This value determines the sensitivity of the anomaly detection algorithm.
         /// </summary>
         public double toleranceValue { get; private set; }
 
@@ -49,9 +51,9 @@ namespace AnomalyDetectionTeamSynergy
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleArgumentsHandler"/> class.
-        /// Parses the provided command-line arguments.
+        /// Parses the provided command-line arguments and assigns values to the corresponding properties.
         /// </summary>
-        /// <param name="args">Command-line arguments.</param>
+        /// <param name="args">Command-line arguments passed to the application.</param>
         public ConsoleArgumentsHandler(string[] args)
         {
             // Initialize fields with default values
@@ -67,7 +69,7 @@ namespace AnomalyDetectionTeamSynergy
         }
 
         /// <summary>
-        /// Parses the provided command-line arguments and assigns values accordingly.
+        /// Parses the provided command-line arguments and assigns values to the corresponding properties.
         /// </summary>
         /// <param name="args">Array of command-line arguments.</param>
         private void ParseArguments(string[] args)
@@ -88,7 +90,7 @@ namespace AnomalyDetectionTeamSynergy
                         if (i + 1 < args.Length)
                         {
                             trainingFile = args[i + 1];
-                            i++; // Skip the next argument since it's assigned to TrainingFile
+                            i++; // Skip the next argument since it's assigned to trainingFile
                         }
                         break;
 
@@ -96,7 +98,7 @@ namespace AnomalyDetectionTeamSynergy
                         if (i + 1 < args.Length)
                         {
                             inferringFile = args[i + 1];
-                            i++; // Skip the next argument since it's assigned to InferringFile
+                            i++; // Skip the next argument since it's assigned to inferringFile
                         }
                         break;
 
@@ -104,7 +106,7 @@ namespace AnomalyDetectionTeamSynergy
                         if (i + 1 < args.Length)
                         {
                             trainingFolder = args[i + 1];
-                            i++; // Skip the next argument since it's assigned to TrainingFolder
+                            i++; // Skip the next argument since it's assigned to trainingFolder
                         }
                         break;
 
@@ -112,7 +114,7 @@ namespace AnomalyDetectionTeamSynergy
                         if (i + 1 < args.Length)
                         {
                             inferringFolder = args[i + 1];
-                            i++; // Skip the next argument since it's assigned to InferringFolder
+                            i++; // Skip the next argument since it's assigned to inferringFolder
                         }
                         break;
 
@@ -120,7 +122,7 @@ namespace AnomalyDetectionTeamSynergy
                         if (i + 1 < args.Length && double.TryParse(args[i + 1], out double readToleranceValue))
                         {
                             toleranceValue = readToleranceValue;
-                            i++; // Skip the next argument since it's assigned to Tolerance Value
+                            i++; // Skip the next argument since it's assigned to toleranceValue
                         }
                         break;
 
