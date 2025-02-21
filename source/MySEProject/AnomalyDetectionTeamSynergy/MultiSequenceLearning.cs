@@ -16,6 +16,14 @@ namespace AnomalyDetectionTeamSynergy
     /// </summary>
     public class MultiSequenceLearning
     {
+        private double maxValue;
+
+        public MultiSequenceLearning(double maxValue)
+        {
+            this.maxValue = maxValue;
+        }
+
+
         /// <summary>
         /// Runs the learning of sequences.
         /// </summary>
@@ -54,7 +62,7 @@ namespace AnomalyDetectionTeamSynergy
                 PredictedSegmentDecrement = 0.1
             };
 
-            double max = 60;
+            double max = this.maxValue;
 
             Dictionary<string, object> settings = new Dictionary<string, object>()
             {

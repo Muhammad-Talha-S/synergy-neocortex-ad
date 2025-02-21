@@ -52,11 +52,6 @@ namespace AnomalyDetectionTeamSynergy
                     all_training_sequences.AddRange(training_sequences);
                 }
 
-                // Convert training sequences to HTM input format
-                var htm_training_sequence = csv_htm_input.BuildHTMInput(all_training_sequences);
-                MultiSequenceLearning learning = new MultiSequenceLearning();
-                var predictor = learning.Run(htm_training_sequence);
-
                 // Read and parse inferring data files
                 foreach (var filePath in inferring_files)
                 {
@@ -69,6 +64,14 @@ namespace AnomalyDetectionTeamSynergy
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
                 var trimmed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, N);
                 csv_reader.DisplaySequenceData(trimmed_inferring_sequences);
+
+                var sequence_analyzer = new SequenceAnalyzer(all_training_sequences, trimmed_inferring_sequences);
+                var maxValue = sequence_analyzer.FindMaxValue();
+
+                // Convert training sequences to HTM input format
+                var htm_training_sequence = csv_htm_input.BuildHTMInput(all_training_sequences);
+                MultiSequenceLearning learning = new MultiSequenceLearning();
+                var predictor = learning.Run(htm_training_sequence);
 
                 var anomaly_detection = new AnomalyDetection();
 
