@@ -1,5 +1,12 @@
+import argparse
 import pandas as pd
 import plotly.graph_objects as go
+
+def parse_arguments():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Load CSV data and plot actual vs predicted values.")
+    parser.add_argument("filename", type=str, default="sequence_1_predictions.csv", nargs="?", help="Path to the CSV file.")
+    return parser.parse_args()
 
 def load_and_clean_data(file_path):
     """Load CSV data, replace missing values, and convert to numeric."""
@@ -49,8 +56,8 @@ def plot_actual_vs_predicted(dataframe):
 
 def main():
     """Main function to load data and plot graph."""
-    file_path = "sequence_1_predictions.csv"
-    sequence_df = load_and_clean_data(file_path)
+    args = parse_arguments()
+    sequence_df = load_and_clean_data(args.filename)
     plot_actual_vs_predicted(sequence_df)
 
 if __name__ == "__main__":
