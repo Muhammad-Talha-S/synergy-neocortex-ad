@@ -70,7 +70,7 @@ namespace AnomalyDetectionTeamSynergy
 
                 // Convert training sequences to HTM input format
                 var htm_training_sequence = csv_htm_input.BuildHTMInput(all_training_sequences);
-                MultiSequenceLearning learning = new MultiSequenceLearning();
+                MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
                 var predictor = learning.Run(htm_training_sequence);
 
                 var anomaly_detection = new AnomalyDetection();
