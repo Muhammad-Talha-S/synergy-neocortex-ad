@@ -8,40 +8,49 @@ namespace AnomalyDetectionTeamSynergy
 {
     /// <summary>
     /// This class provides methods for detecting anomalies in a sequence of numerical data
-    /// using a predictive model.
+    /// using a predictive model. Anomalies are detected based on both relative and absolute
+    /// deviation thresholds.
     /// </summary>
     public class AnomalyDetection
     {
+        private double tolerance;
+        private double threshold;
+
         /// <summary>
-        /// Determines whether a given value is an anomaly based on absolute and relative thresholds.
+        /// Default constructor to initialize tolerance and threshold values with default settings.
+        /// - Tolerance is set to 0.1 (10%), which is the relative deviation threshold.
+        /// - Threshold is set to 1, which is the absolute deviation threshold.
         /// </summary>
-        /// <param name="predictedValue">The predicted value from the model.</param>
-        /// <param name="actualValue">The actual value from the dataset.</param>
-        /// <param name="absoluteThreshold">The absolute deviation threshold.</param>
-        /// <param name="relativeThreshold">The relative deviation threshold (as a fraction).</param>
-        /// <returns>Returns true if an anomaly is detected, otherwise false.</returns>
-        public bool IsAnomaly(double predictedValue, double actualValue, double absoluteThreshold, double relativeThreshold)
+        public AnomalyDetection(double toleranceValue)
         {
-            // Calculate the absolute difference
-            double absoluteDifference = Math.Abs(predictedValue - actualValue);
-
-            // Calculate the relative difference (percentage deviation)
-            double relativeDifference = absoluteDifference / actualValue;
-
-            // Check if both thresholds are exceeded
-            return absoluteDifference > absoluteThreshold && relativeDifference > relativeThreshold;
+            this.tolerance = toleranceValue;
+            this.threshold = 1;  // Default absolute threshold for anomalies
         }
 
         /// <summary>
-        /// Detects anomalies in a given numerical sequence using a predictor model.
+        /// Determines if the difference between the predicted value and the actual value
+        /// constitutes an anomaly based on the predefined tolerance and threshold.
         /// </summary>
-        /// <param name="predictor">The predictor model used for making predictions.</param>
-        /// <param name="sequence">The sequence of numerical values to analyze.</param>
-        /// <param name="fileName">The filename to store the results in CSV format.</param>
+        /// <param name="predictedValue">The value predicted by the model.</param>
+        /// <param name="actualValue">The actual observed value.</param>
+        /// <returns>True if an anomaly is detected, otherwise false.</returns>
+        public bool IsAnomaly(double predictedValue, double actualValue)
+        {
+            double absoluteDifference = Math.Abs(predictedValue - actualValue);
+            double relativeDifference = absoluteDifference / actualValue;
+            return absoluteDifference > this.threshold && relativeDifference > this.tolerance;
+        }
+
+        /// <summary>
+        /// Detects anomalies in a sequence of numerical data using a predictive model.
+        /// The method processes each element in the sequence, predicts the next value,
+        /// and checks for anomalies based on the predicted and actual values.
+        /// </summary>
+        /// <param name="predictor">The predictor model used for forecasting the next value in the sequence.</param>
+        /// <param name="sequence">The sequence of numerical data to analyze.</param>
+        /// <param name="fileName">The name of the CSV file to save the results.</param>
         public void DetectAnomaly(Predictor predictor, List<double> sequence, string fileName)
         {
-            double tolerance = 0.1; // Tolerance level set to 10%
-            double threshold = 1; // Absolute threshold for anomalies
             List<string> predictedSequence = new List<string> { "-" };
 
             Console.WriteLine("\n===========================================");
@@ -50,7 +59,6 @@ namespace AnomalyDetectionTeamSynergy
             Console.WriteLine($"\nSequence to Analyze: [{string.Join(", ", sequence)}]\n");
             Console.WriteLine("-------------------------------------------");
 
-            // Iterate through the sequence to analyze anomalies
             for (int i = 0; i < sequence.Count - 1; i++)
             {
                 double currentNumber = sequence[i];
@@ -66,7 +74,6 @@ namespace AnomalyDetectionTeamSynergy
                     string[] predictedSequenceParts = predictedInput.Split('-');
                     double similarity = bestPrediction.Similarity;
 
-                    // Parse the predicted next element from the sequence
                     var predictedNextElement = double.Parse(predictedSequenceParts.Last());
 
                     Console.WriteLine($"   - Predicted Next Element: {predictedNextElement}");
@@ -77,7 +84,7 @@ namespace AnomalyDetectionTeamSynergy
                     predictedSequence.Add(predictedNextElement.ToString());
 
                     // Check for anomaly
-                    bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber, threshold, tolerance);
+                    bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber);
                     if (anomalyDetected)
                     {
                         Console.WriteLine("\n   !!! Anomaly Detected !!!");

@@ -21,63 +21,67 @@ namespace AnomalyDetectionTeamSynergy
 
             // Retrieve parsed argument values
             int N = handler.N;
-            string trainingFile = handler.TrainingFile;
-            string inferringFile = handler.InferringFile;
-            string trainingFolder = handler.TrainingFolder;
-            string inferringFolder = handler.InferringFolder;
+            string trainingFile = handler.trainingFile;
+            string inferringFile = handler.inferringFile;
+            string trainingFolder = handler.trainingFolder;
+            string inferringFolder = handler.inferringFolder;
+            double toleranceValue = handler.toleranceValue;
 
             var fileHandler = new FileHandler();
 
             // Lists to store all training and inferring sequences
-            List<List<double>> all_training_sequences = new List<List<double>>();
-            List<List<double>> all_inferring_sequences = new List<List<double>>();
+            List<List<double>> allTrainingSequences = new List<List<double>>();
+            List<List<double>> allInferringSequences = new List<List<double>>();
 
             try
             {
                 // Process files and extract relevant data
                 fileHandler.ProcessFiles(trainingFile, inferringFile, trainingFolder, inferringFolder);
 
-                var training_files = fileHandler.TrainingDataFiles;
-                var inferring_files = fileHandler.InferringDataFiles;
+                var trainingFiles = fileHandler.TrainingDataFiles;
+                var inferringFiles = fileHandler.InferringDataFiles;
 
-                var csv_reader = new CSVHandler();
-                var csv_htm_input = new CSVToHTMInput();
+                var csvReader = new CSVHandler();
+                var csvHtmInput = new CSVToHTMInput();
 
                 // Read and parse training data files
-                foreach (var filePath in training_files)
+                foreach (var filePath in trainingFiles)
                 {
                     Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
-                    var training_sequences = csv_reader.ParseSequencesFromCSV(filePath);
-                    csv_reader.DisplaySequenceData(training_sequences);
-                    all_training_sequences.AddRange(training_sequences);
+                    var trainingSequences = csvReader.ParseSequencesFromCSV(filePath);
+                    csvReader.DisplaySequenceData(trainingSequences);
+                    allTrainingSequences.AddRange(trainingSequences);
                 }
 
-                // Convert training sequences to HTM input format
-                var htm_training_sequence = csv_htm_input.BuildHTMInput(all_training_sequences);
-                MultiSequenceLearning learning = new MultiSequenceLearning();
-                var predictor = learning.Run(htm_training_sequence);
-
                 // Read and parse inferring data files
-                foreach (var filePath in inferring_files)
+                foreach (var filePath in inferringFiles)
                 {
                     Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
-                    var inferring_sequences = csv_reader.ParseSequencesFromCSV(filePath);
-                    csv_reader.DisplaySequenceData(inferring_sequences);
-                    all_inferring_sequences.AddRange(inferring_sequences);
+                    var inferringSequences = csvReader.ParseSequencesFromCSV(filePath);
+                    csvReader.DisplaySequenceData(inferringSequences);
+                    allInferringSequences.AddRange(inferringSequences);
                 }
 
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
-                var trimmed_inferring_sequences = csv_reader.TrimSequences(all_inferring_sequences, N);
-                csv_reader.DisplaySequenceData(trimmed_inferring_sequences);
+                var trimmedInferringSequences = csvReader.TrimSequences(allInferringSequences, N);
+                csvReader.DisplaySequenceData(trimmedInferringSequences);
 
-                var anomaly_detection = new AnomalyDetection();
+                var sequenceAnalyzer = new SequenceAnalyzer(allTrainingSequences, trimmedInferringSequences);
+                var maxValue = sequenceAnalyzer.FindMaxValue();
+
+                // Convert training sequences to HTM input format
+                var htmTrainingSequence = csvHtmInput.BuildHTMInput(allTrainingSequences);
+                MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
+                var predictor = learning.Run(htmTrainingSequence);
+
+                var anomalyDetection = new AnomalyDetection(toleranceValue);
 
                 // Perform anomaly detection on the trimmed sequences
                 int sequence_no = 1;
-                foreach (var sequence in trimmed_inferring_sequences)
+                foreach (var sequence in trimmedInferringSequences)
                 {
                     string prediction_data_csv = $"sequence_{sequence_no}_predictions.csv";
-                    anomaly_detection.DetectAnomaly(predictor, sequence, prediction_data_csv);
+                    anomalyDetection.DetectAnomaly(predictor, sequence, prediction_data_csv);
                 }
             }
             catch (Exception ex)
