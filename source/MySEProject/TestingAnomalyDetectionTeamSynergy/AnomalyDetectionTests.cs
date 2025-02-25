@@ -1,0 +1,33 @@
+﻿using AnomalyDetectionTeamSynergy;
+namespace TestingAnomalyDetectionTeamSynergy
+{
+    [TestClass]
+    public class AnomalyDetectionTests
+    {
+        [TestMethod]
+        public void Test_IsAnomaly_WithAnomaly()
+        {
+            double relativeThreshold = 0.1;
+            var anomalyDetection = new AnomalyDetection(relativeThreshold);
+            double predictedValue = 100;
+            double actualValue = 120;
+            
+            bool result = anomalyDetection.IsAnomaly(predictedValue, actualValue);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Test_IsAnomaly_WithoutAnomaly()
+        {
+            double relativeThreshold = 0.1;
+            var anomalyDetection = new AnomalyDetection(relativeThreshold);
+            double predictedValue = 100;
+            double actualValue = 105;
+            
+            bool result = anomalyDetection.IsAnomaly(predictedValue, actualValue);
+
+            Assert.IsFalse(result);
+        }
+    }
+}

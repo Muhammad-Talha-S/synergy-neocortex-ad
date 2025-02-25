@@ -101,44 +101,52 @@ namespace AnomalyDetectionTeamSynergy
         }
 
         /// <summary>
-        /// Saves a sequence and its corresponding predicted sequence to a CSV file.
-        /// The file is saved in a specified directory within the project, and the directory is created if it does not exist.
+        /// Saves the actual and predicted sequences to a CSV file in the "ModelPredictions" directory.
         /// </summary>
-        /// <param name="fileName">The name of the CSV file to save the data to.</param>
-        /// <param name="sequence">The actual sequence of double values.</param>
-        /// <param name="predictedSequence">The predicted sequence of string values.</param>
-        /// <exception cref="ArgumentException">Thrown if the sequence and predictedSequence lists are not of equal size.</exception>
-        /// <exception cref="DirectoryNotFoundException">Thrown if the specified directory path is invalid.</exception>
-        /// <exception cref="IOException">Thrown if an I/O error occurs while writing to the file.</exception>
+        /// <param name="fileName">The name of the output CSV file.</param>
+        /// <param name="sequence">The list of actual values.</param>
+        /// <param name="predictedSequence">The list of predicted values.</param>
+        /// <exception cref="ArgumentException">Thrown if the two lists are not of equal length.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if either list is null or empty.</exception>
         public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence)
         {
-            string projectbaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
-            string folderPath = Path.Combine(projectbaseDirectory, "ModelPredictions");
-
-            // Ensure the directory exists
-            if (!Directory.Exists(folderPath))
+            // Validate input lists
+            if (sequence == null || predictedSequence == null)
             {
-                Directory.CreateDirectory(folderPath);
+                throw new ArgumentNullException("Input lists cannot be null.");
             }
 
-            string filePath = Path.Combine(folderPath, fileName);
+            if (sequence.Count == 0 || predictedSequence.Count == 0)
+            {
+                throw new ArgumentException("Input lists cannot be empty.");
+            }
 
             if (sequence.Count != predictedSequence.Count)
             {
                 throw new ArgumentException("Both lists must be of equal size.");
             }
 
+            // Determine the project base directory
+            string projectBaseDirectory = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
+            string folderPath = Path.Combine(projectBaseDirectory, "ModelPredictions");
+
+            // Ensure the directory exists
+            Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, fileName);
+
+            // Write data to CSV file
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                // Write column headers
-                writer.WriteLine("Actual,Predicted");
+                writer.WriteLine("Actual,Predicted"); // Column headers
 
-                // Write data rows
                 for (int i = 0; i < sequence.Count; i++)
                 {
                     writer.WriteLine($"{sequence[i]},{predictedSequence[i]}");
                 }
             }
+
+            Console.WriteLine($"Data successfully saved to: {filePath}");
         }
     }
 }
