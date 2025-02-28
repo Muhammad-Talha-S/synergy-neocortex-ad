@@ -17,15 +17,22 @@ namespace AnomalyDetectionTeamSynergy
         private double threshold;
 
         /// <summary>
-        /// Default constructor to initialize tolerance and threshold values with default settings.
-        /// - Tolerance is set to 0.1 (10%), which is the relative deviation threshold.
-        /// - Threshold is set to 1, which is the absolute deviation threshold.
+        /// Initializes the anomaly detection model with specified tolerance and threshold values.
+        ///
+        /// - `toleranceValue` is set to 0.1 (10%) by default. If the user wants to change this value, 
+        ///   they must pass the `--tolerance` argument via the console.
+        /// - `threshold` is dynamically set to the minimum of two numbers in both the training and 
+        ///   inferring sequences.
         /// </summary>
+        /// <param name="toleranceValue">The relative deviation tolerance (default: 0.1 or 10%).</param>
+        /// <param name="relativeThreshold">The absolute deviation threshold, determined as the minimum 
+        ///                                 value from both training and inference sequences.</param>
         public AnomalyDetection(double toleranceValue, double relativeThreshold)
         {
             this.tolerance = toleranceValue;
             this.threshold = relativeThreshold;
         }
+
 
         /// <summary>
         /// Determines if the difference between the predicted value and the actual value
@@ -36,9 +43,31 @@ namespace AnomalyDetectionTeamSynergy
         /// <returns>True if an anomaly is detected, otherwise false.</returns>
         public bool IsAnomaly(double predictedValue, double actualValue)
         {
+            // Calculate the absolute difference between predicted and actual values
             double absoluteDifference = Math.Abs(predictedValue - actualValue);
+
+            // Calculate the relative difference as a fraction of the actual value
             double relativeDifference = absoluteDifference / actualValue;
-            return absoluteDifference > this.threshold && relativeDifference > this.tolerance;
+
+            // Check if the absolute difference exceeds the defined threshold
+            bool exceedsThreshold = absoluteDifference > this.threshold;
+
+            // Check if the relative difference exceeds the allowed tolerance
+            bool exceedsTolerance = relativeDifference > this.tolerance;
+
+            // If either condition is not met, return false
+            if (!exceedsThreshold)
+            {
+                return false;
+            }
+
+            if (!exceedsTolerance)
+            {
+                return false;
+            }
+
+            // Both conditions are met, so return true (indicating an anomaly)
+            return true;
         }
 
         /// <summary>
