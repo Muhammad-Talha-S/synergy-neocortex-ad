@@ -28,5 +28,18 @@ namespace AnomalyDetectionTeamSynergy
             // Find and return the maximum value
             return combinedSequences.Max();
         }
+        public double FindDifferenceBetweenTwoMinValues()
+        {
+            // Combine all sequences into a single list
+            var combinedSequences = all_training_sequences.SelectMany(x => x)
+                                                          .Concat(all_inferring_sequences.SelectMany(x => x))
+                                                          .ToList();
+
+            // Find the two minimum values
+            var sortedSequences = combinedSequences.OrderBy(x => x).Take(2).ToList();
+
+            // Calculate the difference between the two minimum values
+            return sortedSequences[1] - sortedSequences[0];
+        }
     }
 }
