@@ -106,9 +106,10 @@ namespace AnomalyDetectionTeamSynergy
         /// <param name="fileName">The name of the output CSV file.</param>
         /// <param name="sequence">The list of actual values.</param>
         /// <param name="predictedSequence">The list of predicted values.</param>
+        /// <param name="matchedSequence">The list of matched sequence values.</param>
         /// <exception cref="ArgumentException">Thrown if the two lists are not of equal length.</exception>
         /// <exception cref="ArgumentNullException">Thrown if either list is null or empty.</exception>
-        public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence)
+        public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence, List<double> matchedSequence)
         {
             // Validate input lists
             if (sequence == null || predictedSequence == null)

@@ -81,6 +81,7 @@ namespace AnomalyDetectionTeamSynergy
         public void DetectAnomaly(Predictor predictor, List<double> sequence, string fileName)
         {
             List<string> predictedSequence = new List<string> { "-" };
+            string predictedInput = "";
 
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION STARTED         ");
@@ -99,7 +100,7 @@ namespace AnomalyDetectionTeamSynergy
                 if (predictionResults.Count > 0)
                 {
                     var bestPrediction = predictionResults.First();
-                    string predictedInput = bestPrediction.PredictedInput;
+                    predictedInput = bestPrediction.PredictedInput;
                     string[] predictedSequenceParts = predictedInput.Split('-');
                     double similarity = bestPrediction.Similarity;
 
@@ -141,9 +142,19 @@ namespace AnomalyDetectionTeamSynergy
             Console.WriteLine("===========================================\n");
 
             // Save results to a CSV file
-            var csvWriter = new CSVHandler();
-            csvWriter.SaveToCsv(fileName, sequence, predictedSequence);
-            Console.WriteLine("CSV file created successfully!");
+            if (predictedInput != "")
+            {
+                List<double> matchedSequence = predictedInput.Split('-')
+                                   .Select(s => double.Parse(s))
+                                   .ToList();
+                var csvWriter = new CSVHandler();
+                csvWriter.SaveToCsv(fileName, sequence, predictedSequence, matchedSequence);
+                Console.WriteLine("CSV file created successfully!");
+            }
+            else
+            {
+                Console.WriteLine("No predictions were made. CSV file not created.");
+            }
         }
     }
 }
