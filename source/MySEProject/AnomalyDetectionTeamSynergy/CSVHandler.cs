@@ -101,30 +101,26 @@ namespace AnomalyDetectionTeamSynergy
         }
 
         /// <summary>
-        /// Saves the actual and predicted sequences to a CSV file in the "ModelPredictions" directory.
+        /// Saves the actual values, predicted values, and best-matched sequence to a CSV file 
+        /// in the "ModelPredictions" directory.
         /// </summary>
-        /// <param name="fileName">The name of the output CSV file.</param>
-        /// <param name="sequence">The list of actual values.</param>
-        /// <param name="predictedSequence">The list of predicted values.</param>
-        /// <param name="matchedSequence">The list of matched sequence values.</param>
-        /// <exception cref="ArgumentException">Thrown if the two lists are not of equal length.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if either list is null or empty.</exception>
-        public void SaveToCsv(string fileName, List<double> sequence, List<string> predictedSequence, List<double> matchedSequence)
+        /// <param name="csvFileName">The name of the output CSV file.</param>
+        /// <param name="inferringSequence">The list of actual values.</param>
+        /// <param name="predictedValues">The list of predicted values.</param>
+        /// <param name="bestMatchedSequence">The list of best-matched sequence values.</param>
+        /// <exception cref="ArgumentNullException">Thrown if any input list is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if input lists are empty.</exception>
+        public void SaveToCsv(string csvFileName, List<double> inferringSequence, List<string> predictedValues, List<double> bestMatchedSequence)
         {
             // Validate input lists
-            if (sequence == null || predictedSequence == null)
+            if (inferringSequence == null || predictedValues == null || bestMatchedSequence == null)
             {
                 throw new ArgumentNullException("Input lists cannot be null.");
             }
 
-            if (sequence.Count == 0 || predictedSequence.Count == 0)
+            if (inferringSequence.Count == 0 || predictedValues.Count == 0)
             {
-                throw new ArgumentException("Input lists cannot be empty.");
-            }
-
-            if (sequence.Count != predictedSequence.Count)
-            {
-                throw new ArgumentException("Both lists must be of equal size.");
+                throw new ArgumentException("Actual and predicted sequences cannot be empty.");
             }
 
             // Determine the project base directory
@@ -134,20 +130,27 @@ namespace AnomalyDetectionTeamSynergy
             // Ensure the directory exists
             Directory.CreateDirectory(folderPath);
 
-            string filePath = Path.Combine(folderPath, fileName);
+            string filePath = Path.Combine(folderPath, csvFileName);
 
             // Write data to CSV file
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                writer.WriteLine("Actual,Predicted"); // Column headers
+                writer.WriteLine("Inferring Sequence,Predicted Values, Best Matched Sequence"); // Column headers
 
-                for (int i = 0; i < sequence.Count; i++)
+                int maxLength = Math.Max(inferringSequence.Count, Math.Max(predictedValues.Count, bestMatchedSequence.Count));
+
+                for (int i = 0; i < maxLength; i++)
                 {
-                    writer.WriteLine($"{sequence[i]},{predictedSequence[i]}");
+                    string actualValue = i < inferringSequence.Count ? inferringSequence[i].ToString() : "";
+                    string predictedValue = i < predictedValues.Count ? predictedValues[i] : "";
+                    string bestMatchValue = i < bestMatchedSequence.Count ? bestMatchedSequence[i].ToString() : "";
+
+                    writer.WriteLine($"{actualValue},{predictedValue},{bestMatchValue}");
                 }
             }
 
             Console.WriteLine($"Data successfully saved to: {filePath}");
         }
+
     }
 }
