@@ -82,6 +82,7 @@ namespace AnomalyDetectionTeamSynergy
                 {
                     string prediction_data_csv = $"sequence_{sequence_no}_predictions.csv";
                     anomalyDetection.DetectAnomaly(predictor, sequence, prediction_data_csv);
+                    sequence_no++;
                 }
             }
             catch (Exception ex)
