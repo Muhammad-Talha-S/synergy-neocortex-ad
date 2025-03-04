@@ -68,13 +68,14 @@ namespace AnomalyDetectionTeamSynergy
 
                 var sequenceAnalyzer = new SequenceAnalyzer(allTrainingSequences, trimmedInferringSequences);
                 var maxValue = sequenceAnalyzer.FindMaxValue();
+                var relativeThreshold = sequenceAnalyzer.FindDifferenceBetweenTwoMinValues();
 
                 // Convert training sequences to HTM input format
                 var htmTrainingSequence = csvHtmInput.BuildHTMInput(allTrainingSequences);
                 MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
                 var predictor = learning.Run(htmTrainingSequence);
 
-                var anomalyDetection = new AnomalyDetection(toleranceValue);
+                var anomalyDetection = new AnomalyDetection(toleranceValue, relativeThreshold);
 
                 // Perform anomaly detection on the trimmed sequences
                 int sequence_no = 1;
