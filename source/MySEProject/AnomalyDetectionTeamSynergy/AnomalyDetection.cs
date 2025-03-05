@@ -17,15 +17,22 @@ namespace AnomalyDetectionTeamSynergy
         private double threshold;
 
         /// <summary>
-        /// Default constructor to initialize tolerance and threshold values with default settings.
-        /// - Tolerance is set to 0.1 (10%), which is the relative deviation threshold.
-        /// - Threshold is set to 1, which is the absolute deviation threshold.
+        /// Initializes the anomaly detection model with specified tolerance and threshold values.
+        ///
+        /// - `toleranceValue` is set to 0.1 (10%) by default. If the user wants to change this value, 
+        ///   they must pass the `--tolerance` argument via the console.
+        /// - `threshold` is dynamically set to the minimum of two numbers in both the training and 
+        ///   inferring sequences.
         /// </summary>
-        public AnomalyDetection(double toleranceValue)
+        /// <param name="toleranceValue">The relative deviation tolerance (default: 0.1 or 10%).</param>
+        /// <param name="relativeThreshold">The absolute deviation threshold, determined as the minimum 
+        ///                                 value from both training and inference sequences.</param>
+        public AnomalyDetection(double toleranceValue, double relativeThreshold)
         {
             this.tolerance = toleranceValue;
-            this.threshold = 1;  // Default absolute threshold for anomalies
+            this.threshold = relativeThreshold;
         }
+
 
         /// <summary>
         /// Determines if the difference between the predicted value and the actual value
@@ -36,61 +43,84 @@ namespace AnomalyDetectionTeamSynergy
         /// <returns>True if an anomaly is detected, otherwise false.</returns>
         public bool IsAnomaly(double predictedValue, double actualValue)
         {
+            // Calculate the absolute difference between predicted and actual values
             double absoluteDifference = Math.Abs(predictedValue - actualValue);
+
+            // Calculate the relative difference as a fraction of the actual value
             double relativeDifference = absoluteDifference / actualValue;
-            return absoluteDifference > this.threshold && relativeDifference > this.tolerance;
+
+            // Check if the absolute difference exceeds the defined threshold
+            bool exceedsThreshold = absoluteDifference > this.threshold;
+
+            // Check if the relative difference exceeds the allowed tolerance
+            bool exceedsTolerance = relativeDifference > this.tolerance;
+
+            // If either condition is not met, return false
+            if (!exceedsThreshold)
+            {
+                return false;
+            }
+
+            if (!exceedsTolerance)
+            {
+                return false;
+            }
+
+            // Both conditions are met, so return true (indicating an anomaly)
+            return true;
         }
 
         /// <summary>
-        /// Detects anomalies in a sequence of numerical data using a predictive model.
-        /// The method processes each element in the sequence, predicts the next value,
-        /// and checks for anomalies based on the predicted and actual values.
+        /// Detects anomalies in a sequence of numerical data using a trained predictive model.
+        /// The method iterates through the sequence, predicts the next value, and compares 
+        /// it with the actual next value to detect anomalies.
         /// </summary>
-        /// <param name="predictor">The predictor model used for forecasting the next value in the sequence.</param>
-        /// <param name="sequence">The sequence of numerical data to analyze.</param>
-        /// <param name="fileName">The name of the CSV file to save the results.</param>
-        public void DetectAnomaly(Predictor predictor, List<double> sequence, string fileName)
+        /// <param name="predictor">The trained predictor model used for forecasting the next value in the sequence.</param>
+        /// <param name="inferringSequence">The numerical sequence to analyze for anomalies.</param>
+        /// <param name="csvFileName">The name of the CSV file where results will be saved.</param>
+        public void DetectAnomaly(Predictor predictor, List<double> inferringSequence, string csvFileName)
         {
-            List<string> predictedSequence = new List<string> { "-" };
+            List<string> predictedValues = new List<string> { "-" };
+            string bestPredictionSequence = "";
 
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION STARTED         ");
             Console.WriteLine("===========================================");
-            Console.WriteLine($"\nSequence to Analyze: [{string.Join(", ", sequence)}]\n");
+            Console.WriteLine($"\nSequence to Analyze: [{string.Join(", ", inferringSequence)}]\n");
             Console.WriteLine("-------------------------------------------");
 
-            for (int i = 0; i < sequence.Count - 1; i++)
+            for (int i = 0; i < inferringSequence.Count - 1; i++)
             {
-                double currentNumber = sequence[i];
-                double nextNumber = sequence[i + 1];
-                var predictionResults = predictor.Predict(currentNumber);
+                double currentValue = inferringSequence[i];
+                double actualNextValue = inferringSequence[i + 1];
+                var predictionList = predictor.Predict(currentValue);
 
-                Console.WriteLine($"Processing Element: {currentNumber}");
+                Console.WriteLine($"Processing Element: {currentValue}");
 
-                if (predictionResults.Count > 0)
+                if (predictionList.Count > 0)
                 {
-                    var bestPrediction = predictionResults.First();
-                    string predictedInput = bestPrediction.PredictedInput;
-                    string[] predictedSequenceParts = predictedInput.Split('-');
-                    double similarity = bestPrediction.Similarity;
+                    var topPrediction = predictionList.First();
+                    bestPredictionSequence = topPrediction.PredictedInput;
+                    string[] predictedSequenceParts = bestPredictionSequence.Split('-');
+                    double predictionSimilarityScore = topPrediction.Similarity;
 
-                    var predictedNextElement = double.Parse(predictedSequenceParts.Last());
+                    double predictedNextValue = double.Parse(predictedSequenceParts.Last());
 
-                    Console.WriteLine($"   - Predicted Next Element: {predictedNextElement}");
-                    Console.WriteLine($"   - Actual Next Element   : {nextNumber}");
-                    Console.WriteLine($"   - Similarity Score      : {similarity}");
-                    Console.WriteLine($"   - Predicted Sequence    : {predictedInput}");
+                    Console.WriteLine($"   - Predicted Next Value : {predictedNextValue}");
+                    Console.WriteLine($"   - Actual Next Value    : {actualNextValue}");
+                    Console.WriteLine($"   - Similarity Score     : {predictionSimilarityScore}");
+                    Console.WriteLine($"   - Predicted Sequence   : {bestPredictionSequence}");
 
-                    predictedSequence.Add(predictedNextElement.ToString());
+                    predictedValues.Add(predictedNextValue.ToString());
 
                     // Check for anomaly
-                    bool anomalyDetected = IsAnomaly(predictedNextElement, nextNumber);
-                    if (anomalyDetected)
+                    bool isAnomalous = IsAnomaly(predictedNextValue, actualNextValue);
+                    if (isAnomalous)
                     {
                         Console.WriteLine("\n   !!! Anomaly Detected !!!");
-                        Console.WriteLine($"   - Expected: {predictedNextElement}, Found: {nextNumber}");
+                        Console.WriteLine($"   - Expected: {predictedNextValue}, Found: {actualNextValue}");
                         Console.WriteLine("   - Skipping the anomalous value.");
-                        predictedSequence.Add("-");
+                        predictedValues.Add("-");
                         i++; // Skip next element due to anomaly
                     }
                     else
@@ -101,20 +131,32 @@ namespace AnomalyDetectionTeamSynergy
                 else
                 {
                     Console.WriteLine("No Predictions available");
-                    predictedSequence.Add("-");
+                    predictedValues.Add("-");
                 }
                 Console.WriteLine("-------------------------------------------");
             }
 
-            Console.WriteLine($"\nPredicted Sequence: [{string.Join(", ", predictedSequence)}]\n");
+            Console.WriteLine($"\nPredicted Values: [{string.Join(", ", predictedValues)}]\n");
             Console.WriteLine("\n===========================================");
             Console.WriteLine("        ANOMALY DETECTION COMPLETED       ");
             Console.WriteLine("===========================================\n");
 
             // Save results to a CSV file
-            var csvWriter = new CSVHandler();
-            csvWriter.SaveToCsv(fileName, sequence, predictedSequence);
-            Console.WriteLine("CSV file created successfully!");
+            if (!string.IsNullOrEmpty(bestPredictionSequence))
+            {
+                List<double> bestMatchedSequence = bestPredictionSequence.Substring(3) // Remove "S1_"
+                                          .Split('-')
+                                          .Select(double.Parse)
+                                          .ToList();
+                var csvWriter = new CSVHandler();
+                csvWriter.SaveToCsv(csvFileName, inferringSequence, predictedValues, bestMatchedSequence);
+                Console.WriteLine("CSV file created successfully!");
+            }
+            else
+            {
+                Console.WriteLine("No predictions were made. CSV file not created.");
+            }
         }
+
     }
 }
