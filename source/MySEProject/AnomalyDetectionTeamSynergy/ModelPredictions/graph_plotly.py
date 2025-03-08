@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 def parse_arguments():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="Load CSV data and plot actual vs predicted values.")
-    parser.add_argument("filename", type=str, default="sequence_1_predictions.csv", nargs="?", help="Path to the CSV file.")
+    parser.add_argument("filename", type=str, default="sequence_3_predictions.csv", nargs="?", help="Path to the CSV file.")
     return parser.parse_args()
 
 def load_and_clean_data(file_path):

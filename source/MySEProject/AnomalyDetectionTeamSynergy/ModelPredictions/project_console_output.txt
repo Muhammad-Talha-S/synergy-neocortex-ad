@@ -5,10 +5,12 @@ Using default inferring folder...
 Validating and filtering training files...
 Validating and filtering inferring files...
 Training Data Files:
-  D:\Study\S1\SE\RepoWaqas\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\TrainingData\training_data_1.csv
+  D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\TrainingData\training_data_1.csv
+  D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\TrainingData\training_data_2.csv
 
 Inferring Data Files:
-  D:\Study\S1\SE\RepoWaqas\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\InferringData\inferring_data_1.csv
+  D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\InferringData\inferring_data_1.csv
+  D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\InferringData\inferring_data_2.csv
 
 --- Reading File: training_data_1.csv ---
 Reading lines from the file...
@@ -28,19 +30,53 @@ Sequence 1: 22, 24, 26, 28, 26, 24, 26, 27, 29, 30, 32, 33, 30, 31, 34, 36, 35, 
 Sequence 2: 22, 24, 25, 27, 26, 25, 26, 27, 28, 30, 31, 33, 30, 32, 34, 36, 37, 35, 38, 36, 37, 39, 40, 41, 43, 44
 Sequence 3: 22, 24, 23, 24, 26, 24, 26, 28, 29, 30, 33, 34, 32, 31, 34, 36, 35, 37, 38, 36, 37, 39, 40, 41, 43, 44
 
+--- Reading File: training_data_2.csv ---
+Reading lines from the file...
+Total lines read: 4
+Processing line 2: 80,78,76,75,72,73,71,69,68,67,66,64,60,61,59,58,55,54,52,50,51,46,44,40,36,34,33,30,28,26
+Split values: 80, 78, 76, 75, 72, 73, 71, 69, 68, 67, 66, 64, 60, 61, 59, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 33, 30, 28, 26
+Valid sequence added.
+Processing line 3: 82,78,74,75,72,73,71,70,68,67,65,64,60,61,57,58,55,54,52,50,51,46,44,40,36,34,33,30,26,24
+Split values: 82, 78, 74, 75, 72, 73, 71, 70, 68, 67, 65, 64, 60, 61, 57, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 33, 30, 26, 24
+Valid sequence added.
+Processing line 4: 80,78,76,75,74,73,70,69,68,67,63,64,60,61,59,58,55,54,52,50,51,46,44,40,36,34,32,30,28,24
+Split values: 80, 78, 76, 75, 74, 73, 70, 69, 68, 67, 63, 64, 60, 61, 59, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 32, 30, 28, 24
+Valid sequence added.
+Finished processing file.
+Displaying sequence data:
+Sequence 1: 80, 78, 76, 75, 72, 73, 71, 69, 68, 67, 66, 64, 60, 61, 59, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 33, 30, 28, 26
+Sequence 2: 82, 78, 74, 75, 72, 73, 71, 70, 68, 67, 65, 64, 60, 61, 57, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 33, 30, 26, 24
+Sequence 3: 80, 78, 76, 75, 74, 73, 70, 69, 68, 67, 63, 64, 60, 61, 59, 58, 55, 54, 52, 50, 51, 46, 44, 40, 36, 34, 32, 30, 28, 24
+
 --- Reading File: inferring_data_1.csv ---
 Reading lines from the file...
-Total lines read: 2
+Total lines read: 3
 Processing line 2: 22,24,26,28,40,24,26,27,29,30,32,33,14,31,34,36,35,37,38,50,37,39,40,41,43,44
 Split values: 22, 24, 26, 28, 40, 24, 26, 27, 29, 30, 32, 33, 14, 31, 34, 36, 35, 37, 38, 50, 37, 39, 40, 41, 43, 44
+Valid sequence added.
+Processing line 3: 29,30,33,34,32,31,34,36,10,37,38,36,37,39,70,41,43,44,,,,,,,,
+Split values: 29, 30, 33, 34, 32, 31, 34, 36, 10, 37, 38, 36, 37, 39, 70, 41, 43, 44
 Valid sequence added.
 Finished processing file.
 Displaying sequence data:
 Sequence 1: 22, 24, 26, 28, 40, 24, 26, 27, 29, 30, 32, 33, 14, 31, 34, 36, 35, 37, 38, 50, 37, 39, 40, 41, 43, 44
+Sequence 2: 29, 30, 33, 34, 32, 31, 34, 36, 10, 37, 38, 36, 37, 39, 70, 41, 43, 44
+
+--- Reading File: inferring_data_2.csv ---
+Reading lines from the file...
+Total lines read: 2
+Processing line 2: 80,78,76,75,72,73,71,69,100,67,66,64,60,61,22,58,55,54,26,50,51,46,44,40,36,62,33,30,28,26
+Split values: 80, 78, 76, 75, 72, 73, 71, 69, 100, 67, 66, 64, 60, 61, 22, 58, 55, 54, 26, 50, 51, 46, 44, 40, 36, 62, 33, 30, 28, 26
+Valid sequence added.
+Finished processing file.
+Displaying sequence data:
+Sequence 1: 80, 78, 76, 75, 72, 73, 71, 69, 100, 67, 66, 64, 60, 61, 22, 58, 55, 54, 26, 50, 51, 46, 44, 40, 36, 62, 33, 30, 28, 26
 
 --- Displaying Trimmed Sequences ---
 Displaying sequence data:
 Sequence 1: 22, 24, 26, 28, 40, 24, 26, 27, 29, 30, 32, 33, 14, 31, 34, 36, 35, 37, 38, 50, 37, 39, 40, 41, 43, 44
+Sequence 2: 29, 30, 33, 34, 32, 31, 34, 36, 10, 37, 38, 36, 37, 39, 70, 41, 43, 44
+Sequence 3: 80, 78, 76, 75, 72, 73, 71, 69, 100, 67, 66, 64, 60, 61, 22, 58, 55, 54, 26, 50, 51, 46, 44, 40, 36, 62, 33, 30, 28, 26
 Hello NeocortexApi! Experiment MultiSequenceLearning
 
 ===========================================
@@ -51,163 +87,463 @@ Sequence to Analyze: [22, 24, 26, 28, 40, 24, 26, 27, 29, 30, 32, 33, 14, 31, 34
 
 -------------------------------------------
 Processing Element: 22
-   - Predicted Next Element: 24
-   - Actual Next Element   : 24
-   - Similarity Score      : 100
-   - Predicted Sequence    : S1_26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24
+   - Predicted Next Value : 24
+   - Actual Next Value    : 24
+   - Similarity Score     : 100
+   - Predicted Sequence   : S3_23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24
 No Anomaly Detected!
 -------------------------------------------
 Processing Element: 24
-   - Predicted Next Element: 23
-   - Actual Next Element   : 26
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23
-
-   !!! Anomaly Detected !!!
-   - Expected: 23, Found: 26
-   - Skipping the anomalous value.
--------------------------------------------
-Processing Element: 28
-   - Predicted Next Element: 29
-   - Actual Next Element   : 40
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29
-
-   !!! Anomaly Detected !!!
-   - Expected: 29, Found: 40
-   - Skipping the anomalous value.
--------------------------------------------
-Processing Element: 24
-   - Predicted Next Element: 26
-   - Actual Next Element   : 26
-   - Similarity Score      : 33.78
-   - Predicted Sequence    : S3_28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26
+   - Predicted Next Value : 23
+   - Actual Next Value    : 26
+   - Similarity Score     : 50
+   - Predicted Sequence   : S3_24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23
 No Anomaly Detected!
 -------------------------------------------
 Processing Element: 26
-   - Predicted Next Element: 24
-   - Actual Next Element   : 27
-   - Similarity Score      : 54.17
-   - Predicted Sequence    : S3_26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24
-
-   !!! Anomaly Detected !!!
-   - Expected: 24, Found: 27
-   - Skipping the anomalous value.
--------------------------------------------
-Processing Element: 29
-No Predictions available
--------------------------------------------
-Processing Element: 30
-   - Predicted Next Element: 32
-   - Actual Next Element   : 32
-   - Similarity Score      : 54.24
-   - Predicted Sequence    : S2_34-36-37-35-38-36-37-39-40-41-43-44-22-24-25-27-26-25-26-27-28-30-31-33-30-32
+   - Predicted Next Value : 24
+   - Actual Next Value    : 28
+   - Similarity Score     : 29.17
+   - Predicted Sequence   : S3_26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24
 No Anomaly Detected!
 -------------------------------------------
+Processing Element: 28
+   - Predicted Next Value : 24
+   - Actual Next Value    : 40
+   - Similarity Score     : 83.33
+   - Predicted Sequence   : S6_80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24
+
+   !!! Anomaly Detected !!!
+   - Expected: 24, Found: 40
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 24
+   - Predicted Next Value : 26
+   - Actual Next Value    : 26
+   - Similarity Score     : 12.5
+   - Predicted Sequence   : S3_28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 26
+   - Predicted Next Value : 28
+   - Actual Next Value    : 27
+   - Similarity Score     : 68.57
+   - Predicted Sequence   : S3_29-30-33-34-32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 27
+No Predictions available
+-------------------------------------------
+Processing Element: 29
+   - Predicted Next Value : 24
+   - Actual Next Value    : 30
+   - Similarity Score     : 71.43
+   - Predicted Sequence   : S6_80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24
+
+   !!! Anomaly Detected !!!
+   - Expected: 24, Found: 30
+   - Skipping the anomalous value.
+-------------------------------------------
 Processing Element: 32
-   - Predicted Next Element: 34
-   - Actual Next Element   : 33
-   - Similarity Score      : 20.83
-   - Predicted Sequence    : S3_32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34
+   - Predicted Next Value : 30
+   - Actual Next Value    : 33
+   - Similarity Score     : 88.89
+   - Predicted Sequence   : S5_-1.0-82-78-74-75-72-73-71-70-68-67-65-64-60-61-57-58-55-54-52-50-51-46-44-40-36-34-33-30
 No Anomaly Detected!
 -------------------------------------------
 Processing Element: 33
-   - Predicted Next Element: 34
-   - Actual Next Element   : 14
-   - Similarity Score      : 96
-   - Predicted Sequence    : S3_32-31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34
+   - Predicted Next Value : 30
+   - Actual Next Value    : 14
+   - Similarity Score     : 4.17
+   - Predicted Sequence   : S1_31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-26-28-26-24-26-27-29-30-32-33-30
 
    !!! Anomaly Detected !!!
-   - Expected: 34, Found: 14
+   - Expected: 30, Found: 14
    - Skipping the anomalous value.
 -------------------------------------------
 Processing Element: 31
-   - Predicted Next Element: 34
-   - Actual Next Element   : 34
-   - Similarity Score      : 80.56
-   - Predicted Sequence    : S3_36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34
-No Anomaly Detected!
--------------------------------------------
-Processing Element: 34
-   - Predicted Next Element: 36
-   - Actual Next Element   : 36
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36
-No Anomaly Detected!
+   - Predicted Next Value : 28
+   - Actual Next Value    : 34
+   - Similarity Score     : 25
+   - Predicted Sequence   : S6_-1.0-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28
+
+   !!! Anomaly Detected !!!
+   - Expected: 28, Found: 34
+   - Skipping the anomalous value.
 -------------------------------------------
 Processing Element: 36
-   - Predicted Next Element: 35
-   - Actual Next Element   : 35
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35
+   - Predicted Next Value : 34
+   - Actual Next Value    : 35
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34
 No Anomaly Detected!
 -------------------------------------------
 Processing Element: 35
-   - Predicted Next Element: 37
-   - Actual Next Element   : 37
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37
-No Anomaly Detected!
--------------------------------------------
-Processing Element: 37
-   - Predicted Next Element: 38
-   - Actual Next Element   : 38
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38
-No Anomaly Detected!
+   - Predicted Next Value : 32
+   - Actual Next Value    : 37
+   - Similarity Score     : 54.17
+   - Predicted Sequence   : S6_30-28-24-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32
+
+   !!! Anomaly Detected !!!
+   - Expected: 32, Found: 37
+   - Skipping the anomalous value.
 -------------------------------------------
 Processing Element: 38
-   - Predicted Next Element: 36
-   - Actual Next Element   : 50
-   - Similarity Score      : 100
-   - Predicted Sequence    : S3_37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36
+   - Predicted Next Value : 36
+   - Actual Next Value    : 50
+   - Similarity Score     : 12.5
+   - Predicted Sequence   : S3_37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36
 
    !!! Anomaly Detected !!!
    - Expected: 36, Found: 50
    - Skipping the anomalous value.
 -------------------------------------------
 Processing Element: 37
-   - Predicted Next Element: 39
-   - Actual Next Element   : 39
-   - Similarity Score      : 12.5
-   - Predicted Sequence    : S1_40-41-43-44-22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39
-No Anomaly Detected!
+No Predictions available
 -------------------------------------------
 Processing Element: 39
-   - Predicted Next Element: 40
-   - Actual Next Element   : 40
-   - Similarity Score      : 88.89
-   - Predicted Sequence    : S3_41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36-37-39-40
+   - Predicted Next Value : 36
+   - Actual Next Value    : 40
+   - Similarity Score     : 88.89
+   - Predicted Sequence   : S4_34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36
 No Anomaly Detected!
 -------------------------------------------
 Processing Element: 40
-   - Predicted Next Element: 41
-   - Actual Next Element   : 41
-   - Similarity Score      : 100
-   - Predicted Sequence    : S1_43-44-22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39-40-41
-No Anomaly Detected!
--------------------------------------------
-Processing Element: 41
-   - Predicted Next Element: 43
-   - Actual Next Element   : 43
-   - Similarity Score      : 100
-   - Predicted Sequence    : S1_44-22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39-40-41-43
-No Anomaly Detected!
+   - Predicted Next Value : 36
+   - Actual Next Value    : 41
+   - Similarity Score     : 88.89
+   - Predicted Sequence   : S4_34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36
+
+   !!! Anomaly Detected !!!
+   - Expected: 36, Found: 41
+   - Skipping the anomalous value.
 -------------------------------------------
 Processing Element: 43
-   - Predicted Next Element: 44
-   - Actual Next Element   : 44
-   - Similarity Score      : 100
-   - Predicted Sequence    : S1_22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39-40-41-43-44
+   - Predicted Next Value : 44
+   - Actual Next Value    : 44
+   - Similarity Score     : 87.5
+   - Predicted Sequence   : S1_22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39-40-41-43-44
 No Anomaly Detected!
 -------------------------------------------
 
-Predicted Sequence: [-, 24, 23, -, 29, -, 26, 24, -, -, 32, 34, 34, -, 34, 36, 35, 37, 38, 36, -, 39, 40, 41, 43, 44]
+Predicted Values: [-, 24, 23, 24, 24, -, 26, 28, -, 24, -, 30, 30, -, 28, -, 34, 32, -, 36, -, -, 36, 36, -, 44]
 
 
 ===========================================
         ANOMALY DETECTION COMPLETED
 ===========================================
 
-Data successfully saved to: D:\Study\S1\SE\RepoWaqas\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\ModelPredictions\sequence_1_predictions.csv
+Data successfully saved to: D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\ModelPredictions\sequence_1_predictions.csv
 CSV file created successfully!
+
+===========================================
+        ANOMALY DETECTION STARTED
+===========================================
+
+Sequence to Analyze: [29, 30, 33, 34, 32, 31, 34, 36, 10, 37, 38, 36, 37, 39, 70, 41, 43, 44]
+
+-------------------------------------------
+Processing Element: 29
+   - Predicted Next Value : 24
+   - Actual Next Value    : 30
+   - Similarity Score     : 71.43
+   - Predicted Sequence   : S6_80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24
+
+   !!! Anomaly Detected !!!
+   - Expected: 24, Found: 30
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 33
+   - Predicted Next Value : 30
+   - Actual Next Value    : 34
+   - Similarity Score     : 84.21
+   - Predicted Sequence   : S4_28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-33-30
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 34
+   - Predicted Next Value : 32
+   - Actual Next Value    : 32
+   - Similarity Score     : 33.33
+   - Predicted Sequence   : S3_31-34-36-35-37-38-36-37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 32
+   - Predicted Next Value : 30
+   - Actual Next Value    : 31
+   - Similarity Score     : 41.67
+   - Predicted Sequence   : S4_-1.0-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-33-30
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 31
+   - Predicted Next Value : 28
+   - Actual Next Value    : 34
+   - Similarity Score     : 25
+   - Predicted Sequence   : S6_-1.0-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28
+
+   !!! Anomaly Detected !!!
+   - Expected: 28, Found: 34
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 36
+   - Predicted Next Value : 34
+   - Actual Next Value    : 10
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34
+
+   !!! Anomaly Detected !!!
+   - Expected: 34, Found: 10
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 37
+   - Predicted Next Value : 39
+   - Actual Next Value    : 38
+   - Similarity Score     : 4.17
+   - Predicted Sequence   : S1_40-41-43-44-22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 38
+   - Predicted Next Value : 36
+   - Actual Next Value    : 36
+   - Similarity Score     : 12.5
+   - Predicted Sequence   : S3_37-39-40-41-43-44-22-24-23-24-26-24-26-28-29-30-33-34-32-31-34-36-35-37-38-36
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 36
+   - Predicted Next Value : 34
+   - Actual Next Value    : 37
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 37
+   - Predicted Next Value : 39
+   - Actual Next Value    : 39
+   - Similarity Score     : 4.17
+   - Predicted Sequence   : S1_40-41-43-44-22-24-26-28-26-24-26-27-29-30-32-33-30-31-34-36-35-37-38-36-37-39
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 39
+   - Predicted Next Value : 36
+   - Actual Next Value    : 70
+   - Similarity Score     : 70.83
+   - Predicted Sequence   : S4_34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36
+
+   !!! Anomaly Detected !!!
+   - Expected: 36, Found: 70
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 41
+   - Predicted Next Value : 36
+   - Actual Next Value    : 43
+   - Similarity Score     : 4.17
+   - Predicted Sequence   : S2_37-39-40-41-43-44-22-24-25-27-26-25-26-27-28-30-31-33-30-32-34-36-37-35-38-36
+
+   !!! Anomaly Detected !!!
+   - Expected: 36, Found: 43
+   - Skipping the anomalous value.
+-------------------------------------------
+
+Predicted Values: [-, 24, -, 30, 32, 30, 28, -, 34, -, 39, 36, 34, 39, 36, -, 36, -]
+
+
+===========================================
+        ANOMALY DETECTION COMPLETED
+===========================================
+
+Data successfully saved to: D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\ModelPredictions\sequence_2_predictions.csv
+CSV file created successfully!
+
+===========================================
+        ANOMALY DETECTION STARTED
+===========================================
+
+Sequence to Analyze: [80, 78, 76, 75, 72, 73, 71, 69, 100, 67, 66, 64, 60, 61, 22, 58, 55, 54, 26, 50, 51, 46, 44, 40, 36, 62, 33, 30, 28, 26]
+
+-------------------------------------------
+Processing Element: 80
+   - Predicted Next Value : 78
+   - Actual Next Value    : 78
+   - Similarity Score     : 95.83
+   - Predicted Sequence   : S6_76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 78
+   - Predicted Next Value : 76
+   - Actual Next Value    : 76
+   - Similarity Score     : 41.67
+   - Predicted Sequence   : S6_75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78-76
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 76
+   - Predicted Next Value : 75
+   - Actual Next Value    : 75
+   - Similarity Score     : 75
+   - Predicted Sequence   : S6_74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78-76-75
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 75
+   - Predicted Next Value : 74
+   - Actual Next Value    : 72
+   - Similarity Score     : 92
+   - Predicted Sequence   : S6_73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78-76-75-74
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 72
+   - Predicted Next Value : 73
+   - Actual Next Value    : 73
+   - Similarity Score     : 20.83
+   - Predicted Sequence   : S4_71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-33-30-28-26-80-78-76-75-72-73
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 73
+   - Predicted Next Value : 70
+   - Actual Next Value    : 71
+   - Similarity Score     : 77.42
+   - Predicted Sequence   : S6_69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78-76-75-74-73-70
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 71
+No Predictions available
+-------------------------------------------
+Processing Element: 69
+   - Predicted Next Value : 68
+   - Actual Next Value    : 100
+   - Similarity Score     : 96
+   - Predicted Sequence   : S4_67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-33-30-28-26-80-78-76-75-72-73-71-69-68
+
+   !!! Anomaly Detected !!!
+   - Expected: 68, Found: 100
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 67
+No Predictions available
+-------------------------------------------
+Processing Element: 66
+   - Predicted Next Value : 66
+   - Actual Next Value    : 64
+   - Similarity Score     : 16.67
+   - Predicted Sequence   : S4_64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 64
+   - Predicted Next Value : 60
+   - Actual Next Value    : 60
+   - Similarity Score     : 50
+   - Predicted Sequence   : S4_61-59-58-55-54-52-50-51-46-44-40-36-34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 60
+   - Predicted Next Value : 61
+   - Actual Next Value    : 61
+   - Similarity Score     : 100
+   - Predicted Sequence   : S5_57-58-55-54-52-50-51-46-44-40-36-34-33-30-26-24-82-78-74-75-72-73-71-70-68-67-65-64-60-61
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 61
+   - Predicted Next Value : 59
+   - Actual Next Value    : 22
+   - Similarity Score     : 100
+   - Predicted Sequence   : S6_58-55-54-52-50-51-46-44-40-36-34-32-30-28-24-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59
+
+   !!! Anomaly Detected !!!
+   - Expected: 59, Found: 22
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 58
+   - Predicted Next Value : 58
+   - Actual Next Value    : 55
+   - Similarity Score     : 4.17
+   - Predicted Sequence   : S5_55-54-52-50-51-46-44-40-36-34-33-30-26-24-82-78-74-75-72-73-71-70-68-67-65-64-60-61-57-58
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 55
+   - Predicted Next Value : 54
+   - Actual Next Value    : 54
+   - Similarity Score     : 96
+   - Predicted Sequence   : S5_52-50-51-46-44-40-36-34-33-30-26-24-82-78-74-75-72-73-71-70-68-67-65-64-60-61-57-58-55-54
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 54
+   - Predicted Next Value : 52
+   - Actual Next Value    : 26
+   - Similarity Score     : 100
+   - Predicted Sequence   : S5_50-51-46-44-40-36-34-33-30-26-24-82-78-74-75-72-73-71-70-68-67-65-64-60-61-57-58-55-54-52
+
+   !!! Anomaly Detected !!!
+   - Expected: 52, Found: 26
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 50
+No Predictions available
+-------------------------------------------
+Processing Element: 51
+   - Predicted Next Value : 46
+   - Actual Next Value    : 46
+   - Similarity Score     : 64.86
+   - Predicted Sequence   : S4_44-40-36-34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 46
+   - Predicted Next Value : 44
+   - Actual Next Value    : 44
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_40-36-34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 44
+   - Predicted Next Value : 40
+   - Actual Next Value    : 40
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_36-34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 40
+   - Predicted Next Value : 36
+   - Actual Next Value    : 36
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_34-33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 36
+   - Predicted Next Value : 34
+   - Actual Next Value    : 62
+   - Similarity Score     : 100
+   - Predicted Sequence   : S4_33-30-28-26-80-78-76-75-72-73-71-69-68-67-66-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34
+
+   !!! Anomaly Detected !!!
+   - Expected: 34, Found: 62
+   - Skipping the anomalous value.
+-------------------------------------------
+Processing Element: 33
+   - Predicted Next Value : 32
+   - Actual Next Value    : 30
+   - Similarity Score     : 45.83
+   - Predicted Sequence   : S6_30-28-24-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 30
+   - Predicted Next Value : 28
+   - Actual Next Value    : 28
+   - Similarity Score     : 16.67
+   - Predicted Sequence   : S6_-1.0-80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28
+No Anomaly Detected!
+-------------------------------------------
+Processing Element: 28
+   - Predicted Next Value : 24
+   - Actual Next Value    : 26
+   - Similarity Score     : 92.31
+   - Predicted Sequence   : S6_80-78-76-75-74-73-70-69-68-67-63-64-60-61-59-58-55-54-52-50-51-46-44-40-36-34-32-30-28-24
+No Anomaly Detected!
+-------------------------------------------
+
+Predicted Values: [-, 78, 76, 75, 74, 73, 70, -, 68, -, -, 66, 60, 61, 59, -, 58, 54, 52, -, -, 46, 44, 40, 36, 34, -, 32, 28, 24]
+
+
+===========================================
+        ANOMALY DETECTION COMPLETED
+===========================================
+
+Data successfully saved to: D:\Study\S1\SE\synergy-neocortex-ad\source\MySEProject\AnomalyDetectionTeamSynergy\ModelPredictions\sequence_3_predictions.csv
+CSV file created successfully!
+
+Press any key to exit...
