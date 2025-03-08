@@ -16,81 +16,101 @@ namespace AnomalyDetectionTeamSynergy
         /// <param name="args">Command-line arguments containing file paths and parameters.</param>
         static void Main(string[] args)
         {
-            // Handle command-line arguments
+            // Handle command-line arguments (such as file paths, folder paths, N value, tolerance value)
             var handler = new ConsoleArgumentsHandler(args);
 
             // Retrieve parsed argument values
-            int N = handler.N;
-            string trainingFile = handler.trainingFile;
-            string inferringFile = handler.inferringFile;
-            string trainingFolder = handler.trainingFolder;
-            string inferringFolder = handler.inferringFolder;
-            double toleranceValue = handler.toleranceValue;
+            int N = handler.N;                                    // Number of elements to trim from inferring sequence
+            string trainingFile = handler.trainingFile;           // Single training file path
+            string inferringFile = handler.inferringFile;         // Single inferring file path
+            string trainingFolder = handler.trainingFolder;       // Folder path for training files
+            string inferringFolder = handler.inferringFolder;     // Folder path for inferring files
+            double toleranceValue = handler.toleranceValue;       // User-defined anomaly tolerance value
 
             var fileHandler = new FileHandler();
 
-            // Lists to store all training and inferring sequences
+            // Lists to store all training and inferring sequences after processing
             List<List<double>> allTrainingSequences = new List<List<double>>();
             List<List<double>> allInferringSequences = new List<List<double>>();
 
             try
             {
-                // Process files and extract relevant data
+                // Process the provided files and folders to extract training and inferring file paths
                 fileHandler.ProcessFiles(trainingFile, inferringFile, trainingFolder, inferringFolder);
 
+                // Get the processed list of file paths
                 var trainingFiles = fileHandler.TrainingDataFiles;
                 var inferringFiles = fileHandler.InferringDataFiles;
 
                 var csvReader = new CSVHandler();
                 var csvHtmInput = new CSVToHTMInput();
 
-                // Read and parse training data files
+                // --- Training Data Processing ---
+                // Read, parse, and store sequences from each training CSV file
                 foreach (var filePath in trainingFiles)
                 {
                     Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
-                    var trainingSequences = csvReader.ParseSequencesFromCSV(filePath);
-                    csvReader.DisplaySequenceData(trainingSequences);
-                    allTrainingSequences.AddRange(trainingSequences);
+                    var trainingSequences = csvReader.ParseSequencesFromCSV(filePath);   // Extract sequences
+                    csvReader.DisplaySequenceData(trainingSequences);                    // Display the sequences
+                    allTrainingSequences.AddRange(trainingSequences);                    // Add to master list
                 }
 
-                // Read and parse inferring data files
+                // --- Inferring Data Processing ---
+                // Read, parse, and store sequences from each inferring CSV file
                 foreach (var filePath in inferringFiles)
                 {
                     Console.WriteLine($"\n--- Reading File: {Path.GetFileName(filePath)} ---");
-                    var inferringSequences = csvReader.ParseSequencesFromCSV(filePath);
-                    csvReader.DisplaySequenceData(inferringSequences);
-                    allInferringSequences.AddRange(inferringSequences);
+                    var inferringSequences = csvReader.ParseSequencesFromCSV(filePath);   // Extract sequences
+                    csvReader.DisplaySequenceData(inferringSequences);                    // Display the sequences
+                    allInferringSequences.AddRange(inferringSequences);                   // Add to master list
                 }
 
+                // --- Sequence Trimming ---
                 Console.WriteLine("\n--- Displaying Trimmed Sequences ---");
+                // Trim each inferring sequence to only contain 'N' elements
                 var trimmedInferringSequences = csvReader.TrimSequences(allInferringSequences, N);
-                csvReader.DisplaySequenceData(trimmedInferringSequences);
+                csvReader.DisplaySequenceData(trimmedInferringSequences);                 // Display trimmed sequences
 
+                // --- Sequence Analysis ---
                 var sequenceAnalyzer = new SequenceAnalyzer(allTrainingSequences, trimmedInferringSequences);
+
+                // Find max value across all sequences for scaling input to HTM
                 var maxValue = sequenceAnalyzer.FindMaxValue();
+
+                // Calculate threshold based on min value differences (used for relative anomaly detection)
                 var relativeThreshold = sequenceAnalyzer.FindDifferenceBetweenTwoMinValues();
 
-                // Convert training sequences to HTM input format
+                // --- HTM Model Training ---
+                // Convert training sequences into HTM-compatible input format
                 var htmTrainingSequence = csvHtmInput.BuildHTMInput(allTrainingSequences);
+
+                // Initialize and train the HTM model using the processed input
                 MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
                 var predictor = learning.Run(htmTrainingSequence);
 
+                // --- Anomaly Detection ---
+                // Initialize anomaly detection class with tolerance and threshold values
                 var anomalyDetection = new AnomalyDetection(toleranceValue, relativeThreshold);
 
-                // Perform anomaly detection on the trimmed sequences
+                // Perform anomaly detection on each trimmed inferring sequence
                 int sequence_no = 1;
                 foreach (var sequence in trimmedInferringSequences)
                 {
+                    // Output file for storing predictions
                     string prediction_data_csv = $"sequence_{sequence_no}_predictions.csv";
+
+                    // Detect anomalies and generate prediction CSV
                     anomalyDetection.DetectAnomaly(predictor, sequence, prediction_data_csv);
                     sequence_no++;
                 }
             }
             catch (Exception ex)
             {
+                // Handle any unexpected errors
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
+            // Program end
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
