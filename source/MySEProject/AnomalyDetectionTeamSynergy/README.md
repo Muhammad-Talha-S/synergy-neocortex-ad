@@ -104,7 +104,7 @@ private List<string> ValidateAndFilterFiles(List<string> files)
 
 ### Step-3 CSV Handling and HTM Input
 
-This step involves reading, parsing, and transforming CSV data into a format suitable for HTM (Hierarchical Temporal Memory) training and inference. The CSVHandler class handles CSV file operations, while the CSVToHTMInput class converts sequences into HTM-compatible input.
+This step involves reading, parsing, and transforming CSV data into a format suitable for HTM (Hierarchical Temporal Memory) training and inference. The [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs) class handles CSV file operations, while the [CSVToHTMInput](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVtoHTMInput.cs) class converts sequences into HTM-compatible input.
 
 #### Key Features:
 
@@ -179,6 +179,182 @@ public void SaveToCsv(string csvFileName, List<double> inferringSequence, List<s
 }
 ```
 
+### Step 4 Sequence Analyzer
+
+The [SequenceAnalyzer](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/SequenceAnalyzer.cs) class computes statistical properties from training and inferring sequences. These properties are used in subsequent steps for HTM training and anomaly detection.
+
+#### Key Methods:
+
+*FindMaxValue*:
+
+* Combines all sequences and finds the maximum value.
+
+* This value is used to configure the Scalar Encoder in HTM training.
+
+```csharp
+public double FindMaxValue()
+{
+    var combinedSequences = all_training_sequences.SelectMany(x => x)
+                                                 .Concat(all_inferring_sequences.SelectMany(x => x))
+                                                 .ToList();
+    return combinedSequences.Max();
+}
+```
+
+*FindDifferenceBetweenTwoMinValues*:
+
+* Combines all sequences and calculates the difference between the two smallest values.
+
+* This difference is used as the relative threshold for anomaly detection.
+
+```csharp
+public double FindDifferenceBetweenTwoMinValues()
+{
+    var combinedSequences = all_training_sequences.SelectMany(x => x)
+                                                 .Concat(all_inferring_sequences.SelectMany(x => x))
+                                                 .ToList();
+    var sortedSequences = combinedSequences.OrderBy(x => x).Take(2).ToList();
+    return sortedSequences[1] - sortedSequences[0];
+}
+```
+
+### Step 5  HTM Training
+
+The [MultiSequenceLearning](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/MultiSequenceLearning.cs) class trains the HTM model using the sequences prepared in Step 4. The maxValue from FindMaxValue is used to configure the Scalar Encoder.
+
+#### Key Steps:
+
+*Input Preparation*:
+
+* Sequences are converted into a dictionary format using [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs).
+
+```csharp
+var htmTrainingSequence = csvHtmInput.BuildHTMInput(allTrainingSequences);
+```
+
+*HTM Configuration*:
+
+* The *maxValue* is used to configure the encoder.
+
+```csharp
+double max = this.maxValue;
+
+Dictionary<string, object> settings = new Dictionary<string, object>()
+{
+    { "W", 15},
+    { "N", inputBits},
+    { "Radius", -1.0},
+    { "MinVal", 0.0},
+    { "Periodic", false},
+    { "Name", "scalar"},
+    { "ClipInput", false},
+    { "MaxVal", max}
+};
+
+EncoderBase encoder = new ScalarEncoder(settings);
+```
+
+*Training*
+
+* The *Run* method trains the model and returns a *Predictor* object.
+
+```csharp
+MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
+var predictor = learning.Run(htmTrainingSequence);
+```
+
+### Step 6 Anomaly Detection
+
+The [AnomalyDetection](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/AnomalyDetection.cs) class uses the trained *Predictor* object to detect anomalies in the inferring sequences. The *relativeThreshold* from *FindDifferenceBetweenTwoMinValues* and the tolerance are used to determine anomalies.
+
+#### Key Features:
+
+*Anomaly Detection Logic*:
+
+* Compares predicted and actual values using the IsAnomaly method.
+
+```csharp
+public bool IsAnomaly(double predictedValue, double actualValue)
+{
+    double absoluteDifference = Math.Abs(predictedValue - actualValue);
+    double relativeDifference = absoluteDifference / actualValue;
+
+    bool exceedsThreshold = absoluteDifference > this.threshold; // threshold from Step 4
+    bool exceedsTolerance = relativeDifference > this.tolerance; // tolerance from user input
+
+    return exceedsThreshold && exceedsTolerance;
+}
+```
+
+*Inference and Anomaly Detection*:
+
+* The *Predictor* object is used to predict the next value in the sequence.
+
+```csharp
+public void DetectAnomaly(Predictor predictor, List<double> inferringSequence, string csvFileName)
+{
+    for (int i = 0; i < inferringSequence.Count - 1; i++)
+    {
+        double currentValue = inferringSequence[i];
+        double actualNextValue = inferringSequence[i + 1];
+        var predictionList = predictor.Predict(currentValue);
+
+        if (predictionList.Count > 0)
+        {
+            var topPrediction = predictionList.First();
+            double predictedNextValue = double.Parse(topPrediction.PredictedInput.Split('-').Last());
+
+            bool isAnomalous = IsAnomaly(predictedNextValue, actualNextValue);
+            if (isAnomalous)
+            {
+                Console.WriteLine("!!! Anomaly Detected !!!");
+                i++; // Skip next element
+            }
+        }
+    }
+}
+```
+
+*Saving Results*:
+
+* Results are saved to a CSV file using the [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs) class.
+
+```csharp
+var csvWriter = new CSVHandler();
+csvWriter.SaveToCsv(csvFileName, inferringSequence, predictedValues, bestMatchedSequence);
+```
+
+## Experiment Results
+
+| **Processing Element** | **Predicted Next Value** | **Actual Next Value** | **Anomaly Flag** | **Expected** | **Found** |
+|-----------------------:|:------------------------:|:---------------------:|:----------------:|:------------:|:---------:|
+|         22             |             24           |          24           |        NO        |              |           |
+|         24             |             26           |          23           |        NO        |              |           |
+|         26             |             28           |          24           |        NO        |              |           |
+|         28             |             40           |          29           |        NO        |              |           |
+|         24             |             26           |          26           |        NO        |              |           |
+|         26             |             27           |          24           |        NO        |              |           |
+|         27             |                          |                       |        NO        |              |           |
+|         29             |             30           |          30           |        NO        |              |           |
+|         30             |             32           |          33           |        NO        |              |           |
+|         32             |             14           |          34           |        NO        |              |           |
+|         31             |             34           |          34           |        NO        |              |           |
+|         34             |             36           |          36           |        NO        |              |           |
+|         36             |             35           |          35           |        NO        |              |           |
+|         35             |             37           |          37           |        NO        |              |           |
+|         37             |             38           |          38           |        NO        |              |           |
+|         38             |             50           |          36           |        NO        |              |           |
+|         37             |                          |                       |        NO        |              |           |
+|         39             |             40           |          40           |        NO        |              |           |
+|         40             |             41           |          41           |        NO        |              |           |
+|         41             |             43           |          43           |        NO        |              |           |
+|         43             |             44           |          44           |        NO        |              |           |
+
+---
+
+### Line Charts for Sample Anomaly Detection
+
+![Line Chart](./ModelPredictions/anomaly_detection_plot.png)
 
 
 ## Resources
