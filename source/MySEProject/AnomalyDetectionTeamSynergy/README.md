@@ -101,6 +101,86 @@ private List<string> ValidateAndFilterFiles(List<string> files)
 
 * *Inferring Data*: Provide a specific file (--inferring-file) or folder (--inferring-folder). If none are provided, it defaults to the InferringData folder.
 
+
+### Step-3 CSV Handling and HTM Input
+
+This step involves reading, parsing, and transforming CSV data into a format suitable for HTM (Hierarchical Temporal Memory) training and inference. The CSVHandler class handles CSV file operations, while the CSVToHTMInput class converts sequences into HTM-compatible input.
+
+#### Key Features:
+
+*CSV Parsing*:
+
+* Reads CSV files and extracts numerical sequences.
+
+* Skips invalid lines and sequences with fewer than 3 values.
+
+* Supports trimming sequences by removing the first N elements.
+
+```csharp
+public List<List<double>> ParseSequencesFromCSV(string filePath)
+{
+    var sequences = new List<List<double>>();
+    var lines = File.ReadAllLines(filePath);
+
+    for (int i = 1; i < lines.Length; i++) // Skip header
+    {
+        var values = lines[i].Split(',', StringSplitOptions.RemoveEmptyEntries);
+        if (values.All(v => double.TryParse(v, NumberStyles.Any, CultureInfo.InvariantCulture, out _)))
+        {
+            var sequence = values.Select(v => double.Parse(v, CultureInfo.InvariantCulture)).ToList();
+            if (sequence.Count > 2) sequences.Add(sequence); // Skip sequences with < 3 values
+        }
+    }
+    return sequences;
+}
+
+public List<List<double>> TrimSequences(List<List<double>> sequences, int N)
+{
+    return sequences.Select(seq => seq.Skip(N).ToList()).ToList();
+}
+```
+
+*HTM Input Transformation*:
+
+* Converts sequences into a dictionary format required for HTM training.
+
+* Assigns unique keys to each sequence for identification.
+
+```csharp
+public Dictionary<string, List<double>> BuildHTMInput(List<List<double>> sequences, string keyPrefix = "S")
+{
+    var dictionary = new Dictionary<string, List<double>>(sequences.Count);
+    for (int i = 0; i < sequences.Count; i++)
+    {
+        dictionary[$"{keyPrefix}{i + 1}"] = sequences[i]; // Assign unique keys
+    }
+    return dictionary;
+}
+```
+
+*Data Saving*:
+
+* Saves inferring sequences, predicted values, and best-matched sequences to a CSV file for analysis.
+
+```csharp
+public void SaveToCsv(string csvFileName, List<double> inferringSequence, List<string> predictedValues, List<double> bestMatchedSequence)
+{
+    string folderPath = Path.Combine(projectBaseDirectory, "ModelPredictions");
+    Directory.CreateDirectory(folderPath);
+
+    using (StreamWriter writer = new StreamWriter(Path.Combine(folderPath, csvFileName)))
+    {
+        writer.WriteLine("Inferring Sequence,Predicted Values,Best Matched Sequence");
+        for (int i = 0; i < Math.Max(inferringSequence.Count, predictedValues.Count); i++)
+        {
+            writer.WriteLine($"{inferringSequence[i]},{predictedValues[i]},{bestMatchedSequence[i]}");
+        }
+    }
+}
+```
+
+
+
 ## Resources
 [NeoCortexApi GitHub Repository](https://github.com/ddobric/neocortexapi)
 
