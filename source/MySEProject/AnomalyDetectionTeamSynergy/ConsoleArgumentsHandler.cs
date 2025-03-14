@@ -10,7 +10,7 @@ namespace AnomalyDetectionTeamSynergy
     {
         /// <summary>
         /// Represents the numerical parameter N extracted from the command-line arguments.
-        /// This value is used to configure the anomaly detection system.
+        /// This value is used to trim the inferring sequences from the start.
         /// </summary>
         public int N { get; private set; }
 
