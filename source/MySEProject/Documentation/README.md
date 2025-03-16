@@ -356,7 +356,7 @@ csvWriter.SaveToCsv(csvFileName, inferringSequence, predictedValues, bestMatched
 
 ### Line Charts for Sample Anomaly Detection
 
-![Line Chart](AnomalyDetectionTeamSynergy/ModelPredictions/anomaly_detection_plot.png)
+![Anomaly Detection Plot](anomaly_detection_plot_sequence_1.png)
 
 ## Resources
 
