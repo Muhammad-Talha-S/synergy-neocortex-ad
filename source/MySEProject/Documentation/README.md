@@ -13,25 +13,27 @@ The NeoCortexApi is a .NET implementation of HTM, providing a powerful and flexi
 ## Requirements
 
 To run this project, we need.
-* [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
-* Nuget package: [NeoCortexApi Version= 1.1.5](https://www.nuget.org/packages/NeoCortexApi/)
 
-For code debugging, we recommend using visual studio 2022/visual studio code IDE. 
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- Nuget package: [NeoCortexApi Version= 1.1.5](https://www.nuget.org/packages/NeoCortexApi/)
+
+For code debugging, we recommend using visual studio 2022/visual studio code IDE.
 
 ## Project Workflow
+
 The project follows these steps:
 
-*Command-Line Arguments*: Parse input parameters such as file paths and tolerance values.
+_Command-Line Arguments_: Parse input parameters such as file paths and tolerance values.
 
-*File Handling*: Read and validate training and inferring data files.
+_File Handling_: Read and validate training and inferring data files.
 
-*Data Parsing*: Parse CSV files into sequences of numerical data.
+_Data Parsing_: Parse CSV files into sequences of numerical data.
 
-*Sequence Analysis*: Analyze sequences to find the maximum value for encoding.
+_Sequence Analysis_: Analyze sequences to find the maximum value for encoding.
 
-*HTM Training*: Train the HTM model using the training sequences.
+_HTM Training_: Train the HTM model using the training sequences.
 
-*Anomaly Detection*: Detect anomalies in the inferring sequences using the trained model.
+_Anomaly Detection_: Detect anomalies in the inferring sequences using the trained model.
 
 ## Step-by-Step Explanation
 
@@ -41,12 +43,12 @@ The project starts by parsing command-line arguments to configure the anomaly de
 
 #### Key Parameters and Default Values
 
-* *N*: Trims the first N elements of inferring sequences. (Default: 0)
-* *trainingFile*: Path to the training data file. (Default: Empty string)
-* *inferringFile*: Path to the inferring (testing) data file. (Default: Empty string)
-* *trainingFolder*: Path to the folder containing multiple training files. (Default: Empty string)
-* *inferringFolder*: Path to the folder containing multiple inferring files. (Default: Empty string)
-* *toleranceValue*: Sets the sensitivity threshold for anomaly detection. (Default: 0.1)
+- _N_: Trims the first N elements of inferring sequences. (Default: 0)
+- _trainingFile_: Path to the training data file. (Default: Empty string)
+- _inferringFile_: Path to the inferring (testing) data file. (Default: Empty string)
+- _trainingFolder_: Path to the folder containing multiple training files. (Default: Empty string)
+- _inferringFolder_: Path to the folder containing multiple inferring files. (Default: Empty string)
+- _toleranceValue_: Sets the sensitivity threshold for anomaly detection. (Default: 0.1)
 
 If no arguments are provided, the application uses the above defaults.
 
@@ -63,11 +65,12 @@ dotnet run --n 5 --training-file "data/training.csv" --inferring-file "data/infe
 The [FileHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/FileHandler.cs) class manages file operations for training and inferring data. It gathers, validates, and filters CSV files from specified paths or default folders.
 
 #### Key Features:
-* *Default Folders*: Automatically uses TrainingData and InferringData folders in the project's base directory if no paths are provided.
 
-* *File Validation*: Ensures files exist and have a .csv extension.
+- _Default Folders_: Automatically uses TrainingData and InferringData folders in the project's base directory if no paths are provided.
 
-* *Flexible Input*: Accepts individual files or folders for both training and inferring data.
+- _File Validation_: Ensures files exist and have a .csv extension.
+
+- _Flexible Input_: Accepts individual files or folders for both training and inferring data.
 
 ```csharp
 private List<string> ValidateAndFilterFiles(List<string> files)
@@ -97,10 +100,9 @@ private List<string> ValidateAndFilterFiles(List<string> files)
 
 #### Usage:
 
-* *Training Data*: Provide a specific file (--training-file) or folder (--training-folder). If none are provided, it defaults to the TrainingData folder.
+- _Training Data_: Provide a specific file (--training-file) or folder (--training-folder). If none are provided, it defaults to the TrainingData folder.
 
-* *Inferring Data*: Provide a specific file (--inferring-file) or folder (--inferring-folder). If none are provided, it defaults to the InferringData folder.
-
+- _Inferring Data_: Provide a specific file (--inferring-file) or folder (--inferring-folder). If none are provided, it defaults to the InferringData folder.
 
 ### Step-3 CSV Handling and HTM Input
 
@@ -108,13 +110,13 @@ This step involves reading, parsing, and transforming CSV data into a format sui
 
 #### Key Features:
 
-*CSV Parsing*:
+_CSV Parsing_:
 
-* Reads CSV files and extracts numerical sequences.
+- Reads CSV files and extracts numerical sequences.
 
-* Skips invalid lines and sequences with fewer than 3 values.
+- Skips invalid lines and sequences with fewer than 3 values.
 
-* Supports trimming sequences by removing the first N elements.
+- Supports trimming sequences by removing the first N elements.
 
 ```csharp
 public List<List<double>> ParseSequencesFromCSV(string filePath)
@@ -140,11 +142,11 @@ public List<List<double>> TrimSequences(List<List<double>> sequences, int N)
 }
 ```
 
-*HTM Input Transformation*:
+_HTM Input Transformation_:
 
-* Converts sequences into a dictionary format required for HTM training.
+- Converts sequences into a dictionary format required for HTM training.
 
-* Assigns unique keys to each sequence for identification.
+- Assigns unique keys to each sequence for identification.
 
 ```csharp
 public Dictionary<string, List<double>> BuildHTMInput(List<List<double>> sequences, string keyPrefix = "S")
@@ -158,9 +160,9 @@ public Dictionary<string, List<double>> BuildHTMInput(List<List<double>> sequenc
 }
 ```
 
-*Data Saving*:
+_Data Saving_:
 
-* Saves inferring sequences, predicted values, and best-matched sequences to a CSV file for analysis.
+- Saves inferring sequences, predicted values, and best-matched sequences to a CSV file for analysis.
 
 ```csharp
 public void SaveToCsv(string csvFileName, List<double> inferringSequence, List<string> predictedValues, List<double> bestMatchedSequence)
@@ -185,11 +187,11 @@ The [SequenceAnalyzer](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/
 
 #### Key Methods:
 
-*FindMaxValue*:
+_FindMaxValue_:
 
-* Combines all sequences and finds the maximum value.
+- Combines all sequences and finds the maximum value.
 
-* This value is used to configure the Scalar Encoder in HTM training.
+- This value is used to configure the Scalar Encoder in HTM training.
 
 ```csharp
 public double FindMaxValue()
@@ -201,11 +203,11 @@ public double FindMaxValue()
 }
 ```
 
-*FindDifferenceBetweenTwoMinValues*:
+_FindDifferenceBetweenTwoMinValues_:
 
-* Combines all sequences and calculates the difference between the two smallest values.
+- Combines all sequences and calculates the difference between the two smallest values.
 
-* This difference is used as the relative threshold for anomaly detection.
+- This difference is used as the relative threshold for anomaly detection.
 
 ```csharp
 public double FindDifferenceBetweenTwoMinValues()
@@ -218,23 +220,23 @@ public double FindDifferenceBetweenTwoMinValues()
 }
 ```
 
-### Step 5  HTM Training
+### Step 5 HTM Training
 
 The [MultiSequenceLearning](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/MultiSequenceLearning.cs) class trains the HTM model using the sequences prepared in Step 4. The maxValue from FindMaxValue is used to configure the Scalar Encoder.
 
 #### Key Steps:
 
-*Input Preparation*:
+_Input Preparation_:
 
-* Sequences are converted into a dictionary format using [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs).
+- Sequences are converted into a dictionary format using [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs).
 
 ```csharp
 var htmTrainingSequence = csvHtmInput.BuildHTMInput(allTrainingSequences);
 ```
 
-*HTM Configuration*:
+_HTM Configuration_:
 
-* The *maxValue* is used to configure the encoder.
+- The _maxValue_ is used to configure the encoder.
 
 ```csharp
 double max = this.maxValue;
@@ -254,9 +256,9 @@ Dictionary<string, object> settings = new Dictionary<string, object>()
 EncoderBase encoder = new ScalarEncoder(settings);
 ```
 
-*Training*
+_Training_
 
-* The *Run* method trains the model and returns a *Predictor* object.
+- The _Run_ method trains the model and returns a _Predictor_ object.
 
 ```csharp
 MultiSequenceLearning learning = new MultiSequenceLearning(maxValue);
@@ -265,13 +267,13 @@ var predictor = learning.Run(htmTrainingSequence);
 
 ### Step 6 Anomaly Detection
 
-The [AnomalyDetection](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/AnomalyDetection.cs) class uses the trained *Predictor* object to detect anomalies in the inferring sequences. The *relativeThreshold* from *FindDifferenceBetweenTwoMinValues* and the tolerance are used to determine anomalies.
+The [AnomalyDetection](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/AnomalyDetection.cs) class uses the trained _Predictor_ object to detect anomalies in the inferring sequences. The _relativeThreshold_ from _FindDifferenceBetweenTwoMinValues_ and the tolerance are used to determine anomalies.
 
 #### Key Features:
 
-*Anomaly Detection Logic*:
+_Anomaly Detection Logic_:
 
-* Compares predicted and actual values using the IsAnomaly method.
+- Compares predicted and actual values using the IsAnomaly method.
 
 ```csharp
 public bool IsAnomaly(double predictedValue, double actualValue)
@@ -286,9 +288,9 @@ public bool IsAnomaly(double predictedValue, double actualValue)
 }
 ```
 
-*Inference and Anomaly Detection*:
+_Inference and Anomaly Detection_:
 
-* The *Predictor* object is used to predict the next value in the sequence.
+- The _Predictor_ object is used to predict the next value in the sequence.
 
 ```csharp
 public void DetectAnomaly(Predictor predictor, List<double> inferringSequence, string csvFileName)
@@ -315,9 +317,9 @@ public void DetectAnomaly(Predictor predictor, List<double> inferringSequence, s
 }
 ```
 
-*Saving Results*:
+_Saving Results_:
 
-* Results are saved to a CSV file using the [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs) class.
+- Results are saved to a CSV file using the [CSVHandler](https://github.com/Muhammad-Talha-S/synergy-neocortex-ad/blob/master/source/MySEProject/AnomalyDetectionTeamSynergy/CSVHandler.cs) class.
 
 ```csharp
 var csvWriter = new CSVHandler();
@@ -327,37 +329,37 @@ csvWriter.SaveToCsv(csvFileName, inferringSequence, predictedValues, bestMatched
 ## Experiment Results
 
 | **Processing Element** | **Predicted Next Value** | **Actual Next Value** | **Anomaly Flag** | **Expected** | **Found** |
-|-----------------------:|:------------------------:|:---------------------:|:----------------:|:------------:|:---------:|
-|         22             |             24           |          24           |        NO        |              |           |
-|         24             |             26           |          23           |        NO        |              |           |
-|         26             |             28           |          24           |        NO        |              |           |
-|         28             |             40           |          29           |        NO        |              |           |
-|         24             |             26           |          26           |        NO        |              |           |
-|         26             |             27           |          24           |        NO        |              |           |
-|         27             |                          |                       |        NO        |              |           |
-|         29             |             30           |          30           |        NO        |              |           |
-|         30             |             32           |          33           |        NO        |              |           |
-|         32             |             14           |          34           |        NO        |              |           |
-|         31             |             34           |          34           |        NO        |              |           |
-|         34             |             36           |          36           |        NO        |              |           |
-|         36             |             35           |          35           |        NO        |              |           |
-|         35             |             37           |          37           |        NO        |              |           |
-|         37             |             38           |          38           |        NO        |              |           |
-|         38             |             50           |          36           |        NO        |              |           |
-|         37             |                          |                       |        NO        |              |           |
-|         39             |             40           |          40           |        NO        |              |           |
-|         40             |             41           |          41           |        NO        |              |           |
-|         41             |             43           |          43           |        NO        |              |           |
-|         43             |             44           |          44           |        NO        |              |           |
+| ---------------------: | :----------------------: | :-------------------: | :--------------: | :----------: | :-------: |
+|                     22 |            24            |          24           |        NO        |              |           |
+|                     24 |            26            |          23           |        NO        |              |           |
+|                     26 |            28            |          24           |        NO        |              |           |
+|                     28 |            40            |          29           |       YES        |      29      |    40     |
+|                     24 |            26            |          26           |        NO        |              |           |
+|                     26 |            27            |          24           |        NO        |              |           |
+|                     27 |                          |                       |                  |     SKIP     |           |
+|                     29 |            30            |          30           |        NO        |              |           |
+|                     30 |            32            |          33           |        NO        |              |           |
+|                     32 |            14            |          34           |        NO        |              |           |
+|                     31 |            34            |          34           |       YES        |      34      |    14     |
+|                     34 |            36            |          36           |        NO        |              |           |
+|                     36 |            35            |          35           |        NO        |              |           |
+|                     35 |            37            |          37           |        NO        |              |           |
+|                     37 |            38            |          38           |        NO        |              |           |
+|                     38 |            50            |          36           |       YES        |      36      |    50     |
+|                     37 |                          |                       |                  |     SKIP     |           |
+|                     39 |            40            |          40           |        NO        |              |           |
+|                     40 |            41            |          41           |        NO        |              |           |
+|                     41 |            43            |          43           |        NO        |              |           |
+|                     43 |            44            |          44           |        NO        |              |           |
 
 ---
 
 ### Line Charts for Sample Anomaly Detection
 
-![Line Chart](./ModelPredictions/anomaly_detection_plot.png)
-
+![Line Chart](AnomalyDetectionTeamSynergy/ModelPredictions/anomaly_detection_plot.png)
 
 ## Resources
+
 [NeoCortexApi GitHub Repository](https://github.com/ddobric/neocortexapi)
 
 [Numenta](https://www.numenta.com/resources/htm/htmschool/)
