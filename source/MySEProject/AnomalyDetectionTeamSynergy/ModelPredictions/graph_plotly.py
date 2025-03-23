@@ -71,7 +71,7 @@ def plot_actual_vs_predicted(dataframe):
 
     # Improve layout
     fig.update_layout(
-        title='ML 24/25-03 Implement Anomaly Detection Sample; Team Synergy',
+        title='ML 24/25-03 Implement Anomaly Detection Sample',
         xaxis_title='Sequence Position',
         yaxis_title='Value at Position',
     )
