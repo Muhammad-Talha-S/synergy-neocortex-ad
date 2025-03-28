@@ -82,8 +82,43 @@ namespace AnomalyDetectionTeamSynergy
         }
 
         /// <summary>
+        /// Executes the core HTM learning experiment that forms the basis for anomaly detection in time-series data.
+        /// This method trains the HTM model (Spatial Pooler + Temporal Memory) to learn normal patterns from sequences,
+        /// which enables the anomaly detection system to identify deviations in new data.
         ///
+        /// RELATION TO ANOMALY DETECTION EXPERIMENT:
+        /// 1. Training Phase (Program.cs):
+        ///    - Processes normalized training sequences from CSV files
+        ///    - Uses this method to learn stable representations of normal patterns
+        ///    - Outputs a trained predictor that encodes the "normal" behavior
+        ///
+        /// 2. Anomaly Detection Phase (Program.cs):
+        ///    - The returned Predictor is used by AnomalyDetection class
+        ///    - Processes trimmed inferring sequences through the trained model
+        ///    - Flags predictions that deviate beyond tolerance thresholds as anomalies
+        ///
+        /// ANOMALY DETECTION-SPECIFIC BEHAVIOR:
+        /// - The newborn stage creates robust feature detectors (SP) that are essential for
+        ///   distinguishing subtle anomalous patterns
+        /// - Temporal Memory learns sequence transitions that represent normal temporal evolution
+        /// - The classifier's prediction confidence scores are used to calculate anomaly likelihood
+        /// - Stability requirements (30 cycles at 100% accuracy) ensure the model won't produce
+        ///   false anomalies due to incomplete learning
+        ///
+        /// KEY CONNECTIONS TO PROGRAM.CS:
+        /// - Uses maxValue from sequence analysis for proper input scaling
+        /// - Processes sequences prepared by CSVToHTMInput.BuildHTMInput()
+        /// - Returns Predictor that's directly used in AnomalyDetection.DetectAnomaly()
+        /// - Learning cycles correspond to the epochs needed to stabilize normal patterns
         /// </summary>
+        /// <param name="inputBits">Must match encoder setup from CSV preprocessing</param>
+        /// <param name="cfg">HTM configuration affecting anomaly sensitivity</param>
+        /// <param name="encoder">Scalar encoder configured with data's min/max range</param>
+        /// <param name="sequences">Normalized training sequences from CSV files</param>
+        /// <returns>
+        /// Predictor object that encapsulates the learned model of normal behavior,
+        /// which the anomaly detection system uses as a reference baseline.
+        /// </returns>
         private Predictor RunExperiment(int inputBits, HtmConfig cfg, EncoderBase encoder, Dictionary<string, List<double>> sequences)
         {
             Stopwatch sw = new Stopwatch();
